@@ -1,6 +1,8 @@
 # Model Card for Image/Text disambiguation model
 
-![pipeline](pipeline.png)
+<p align="center">
+  <img src="pipeline.png" width="500px"/>
+</p>
 
 This model is able to choose the correct image among a list of candidate images given an ambiguous target word and a limited context.
 
@@ -66,11 +68,10 @@ SemEval-2023 VWSD data is composed of 12896 samples, each entry has a target wor
 ## Quantitative Analyses
 
 The model got the following results on the SemEval-2023 VWSD evaluation dataset:
-- **MRR:** 0.833
-- **Hits@1:** 0.737
-- **Hits@3:** 0.920
 
-## Ethical Considerations
+| MRR | Hits@1 | Hits@3 |
+|-----|--------|--------|
+|0.833|0.737   |0.920   |
 
 ## Caveats and Recommendations
 
