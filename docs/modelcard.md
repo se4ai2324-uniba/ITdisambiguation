@@ -35,7 +35,11 @@ Images can represent the different meanings of the word and the model should be 
 
 ### Primary Intended Users
 
-The model was developed for generic users, it could be used by enterprises but it should be tested on possible misuses.
+The model can be used for various purposes. Among the primary intended users are certainly 
+content creators and writers who want to enhance the quality and context of their written content,
+ensuring that the intended meaning of words is accurately conveyed. It is also relevant for developers 
+of text-to-image applications, where textual descriptions are transformed into visual representations, 
+and they can use this model to ensure that the generated images align with the intended textual descriptions.
 
 ### Out-of-Scope Use
 
