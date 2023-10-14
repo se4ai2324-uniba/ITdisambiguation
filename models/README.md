@@ -69,6 +69,8 @@ It makes sense to use ranking metrics to evaluate the model since our task is to
 The pre-training data (LAION-2B) is composed of image-text pairs, more information on their [website](https://laion.ai/blog/laion-5b/).
 SemEval-2023 VWSD data is composed of 12896 samples, each entry has a target word, a short context (usually one word) and ten candidate images of which one is the correct one.
 
+[Here](../data/README.md) you can find the dataset card for more information about the data.
+
 ## Quantitative Analyses
 
 The model got the following results on the SemEval-2023 VWSD evaluation dataset:
