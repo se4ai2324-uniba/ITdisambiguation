@@ -1,7 +1,32 @@
-itdis
+IT Disambiguation
 ==============================
 
-Model based on CLIP for connecting ambigouous text and images
+This model was developed for the **Natural Language Processing** and **Computer Vision** courses,
+it is able to understand the correct sense of the target word by using a text disambiguation module based on MPNet and WordNet.
+MPNet is used to encode text plus some context and then, after getting from WordNet all the synsets associated to the target word, a score is computed between all the encoded word-synset pairs in order to select the correct synset.
+The WordNet synset description is then used to expand the word's context and is given as input to a fine tuned CLIP-based model used to connect text to images.
+
+SemEval-2023
+------------
+
+The model was specifically built to address the [SemEval-2023 Visual Word Sense Disambiguation](https://raganato.github.io/vwsd/) challenge.
+
+**Task**: Given a word and some limited textual context, the task is to select among a set of candidate images the one which corresponds to the intended meaning of the target word.
+```
+@inproceedings{raganato-etal-2023-semeval,
+    title = "{S}em{E}val-2023 {T}ask 1: {V}isual {W}ord {S}ense {D}isambiguation",
+    author = "Raganato, Alessandro  and
+      Calixto, Iacer and
+      Ushio, Asahi and
+      Camacho-Collados, Jose  and
+      Pilehvar, Mohammad Taher",
+    booktitle = "Proceedings of the 17th International Workshop on Semantic Evaluation (SemEval-2023)",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada",
+    publisher = "Association for Computational Linguistics",
+}
+```
 
 Project Organization
 ------------
