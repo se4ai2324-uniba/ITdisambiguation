@@ -1,3 +1,43 @@
+---
+language:
+- en
+license: MIT
+tags:
+- Computer Vision
+- Natural Language Processing
+- CLIP
+- Deep Learning
+- Disambiguation
+- SemEval-2023
+datasets:
+- LAION-2B
+- SemEval-2023 Visual Word Sense Disambiguation
+metrics:
+- mrr
+- hits@1
+- hits@3
+
+model-index:
+- name: IT-Disambiguation
+  results:
+  - task:
+      type: text-to-image
+      name: Text to Image
+    dataset:
+      type: SemEval-2023_VWSD
+      name: SemEval-2023 Visual Word Sense Disambiguation
+    metrics:
+      - type: mrr
+        value: 0.833
+        name: Mean Reciprocal Rank
+      - type: hits@1
+        value: 0.737
+        name: Hits@1
+      - type: hits@3
+        value: 0.920
+        name: Hits@3
+---
+
 # Model Card for Image/Text disambiguation model
 
 <p align="center">
