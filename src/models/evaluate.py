@@ -27,11 +27,12 @@ with torch.no_grad():
     disambiguator = Disambiguator(device=dev)
     tokenizer = open_clip.get_tokenizer('RN50')
     model, _, preprocess = open_clip.create_model_and_transforms('RN50', 'openai', device=dev)
-    model.load_state_dict(torch.load(model_file))
+    model.load_state_dict(torch.load(model_file, map_location=dev))
     data = VWSDDataset(images_path, test_data, target_images, device=dev)
     all_scores = torch.empty((0,10))
     all_pos = torch.empty((0,))
     i = 0
+    print("[+] Starting evaluation [+]")
     for word, context, images, true in DataLoader(data, batch_size=BATCH_SIZE):
         text = tokenizer([f'This is {c}, {exp}.' for c, exp in zip(context, disambiguator(word, context))]).to(dev)
         text_emb = model.encode_text(text, normalize=True)
@@ -42,6 +43,7 @@ with torch.no_grad():
         all_pos = torch.cat((all_pos, true))
         i += scores.size(0)
         print(f'{i}/{len(data)}')
+    print("[+] Finished evaluation [+]")
 
     results = compute_metrics(all_scores, all_pos)
     for i in results.keys():
@@ -52,10 +54,11 @@ with torch.no_grad():
     mlflow.start_run()
     # Log model file 
     mlflow.log_artifact(model_file)
-    mlflow.pytorch.log_model(model.state_dict(), "model")
+    mlflow.pytorch.log_model(model, "model")
     # Log model's parameters
     mlflow.log_params({
         'batch_size': config['BATCH_SIZE'],
+        'grad_acc_factor': config['GRAD_ACC'],
         'epochs': config['EPOCHS'],
         'learning_rate': config['LEARNING_RATE']
     })

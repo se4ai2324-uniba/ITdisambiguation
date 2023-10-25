@@ -1,0 +1,118 @@
+schema: '2.0'
+stages:
+  preprocess_train:
+    cmd: python src/data/preprocess.py data/Train/resized_images_N/ data/train_preprocessed_images/
+      True
+    deps:
+    - path: data/Train/resized_images_N/
+      hash: md5
+      md5: 56c0e20e54aead4eff10d8f89a8e13ff.dir
+      size: 5677570644
+      nfiles: 4156
+    - path: src/data/preprocess.py
+      hash: md5
+      md5: ba763fafab99506648c96b5b8769e862
+      size: 952
+    outs:
+    - path: data/train_preprocessed_images/
+      hash: md5
+      md5: d751713988987e9331980363e24189ce.dir
+      size: 0
+      nfiles: 0
+  preprocess_test:
+    cmd: python src/data/preprocess.py data/Test/resized_test_images_N/ data/test_preprocessed_images/
+      False
+    deps:
+    - path: data/Test/resized_test_images_N/
+      hash: md5
+      md5: e71f1962e1c4d5a51418822e35051f8e.dir
+      size: 5636881869
+      nfiles: 4090
+    - path: src/data/preprocess.py
+      hash: md5
+      md5: ba763fafab99506648c96b5b8769e862
+      size: 952
+    outs:
+    - path: data/test_preprocessed_images/
+      hash: md5
+      md5: 954fe4d34d17855877b1a2edaf37da33.dir
+      size: 2467524875
+      nfiles: 4090
+  train:
+    cmd: python src/models/train.py
+    deps:
+    - path: data/Train/resized_train.data.v1.txt
+      hash: md5
+      md5: e14097f46ae60f352e8816c0976319b7
+      size: 166955
+    - path: data/Train/resized_train.gold.v1.txt
+      hash: md5
+      md5: d35a6e6fe57d560eaf607d6ebade243a
+      size: 14857
+    - path: data/train_preprocessed_images/
+      hash: md5
+      md5: d751713988987e9331980363e24189ce.dir
+      size: 0
+      nfiles: 0
+    - path: src/models/conf.py
+      hash: md5
+      md5: 751597b385755fc173b787c59762bbb4
+      size: 493
+    - path: src/models/train.py
+      hash: md5
+      md5: 22e214575990811f530513cc7138778a
+      size: 1983
+    - path: src/models/utils.py
+      hash: md5
+      md5: 447d4d7d406b461bd4eeb96f64bc6eb9
+      size: 3388
+    outs:
+    - path: models/model.pt
+      hash: md5
+      md5: 4868202a6dce36802eade166deddb8ed
+      size: 408415685
+  evaluate:
+    cmd: python src/models/evaluate.py
+    deps:
+    - path: data/Test/en.test.data.v1.1.txt
+      hash: md5
+      md5: b7eca60b2b3b18a427383a715cec8ab9
+      size: 78662
+    - path: data/Test/en.test.gold.v1.1.txt
+      hash: md5
+      md5: 4801a4dc1ac65936052d6e17d387fe17
+      size: 6926
+    - path: data/test_preprocessed_images/
+      hash: md5
+      md5: 954fe4d34d17855877b1a2edaf37da33.dir
+      size: 2467524875
+      nfiles: 4090
+    - path: models/model.pt
+      hash: md5
+      md5: 4868202a6dce36802eade166deddb8ed
+      size: 408415685
+    - path: src/models/conf.py
+      hash: md5
+      md5: 751597b385755fc173b787c59762bbb4
+      size: 493
+    - path: src/models/evaluate.py
+      hash: md5
+      md5: db87f1b65cf39b2c4768f4711ce7ecec
+      size: 2634
+    - path: src/models/utils.py
+      hash: md5
+      md5: 447d4d7d406b461bd4eeb96f64bc6eb9
+      size: 3388
+    outs:
+    - path: metrics/hits1.metric
+      hash: md5
+      md5: 3f8de59ad942dd92b6e0027b935dd449
+      size: 25
+    - path: metrics/hits3.metric
+      hash: md5
+      md5: 91950d375dee0ac56f30119facff221c
+      size: 26
+    - path: metrics/mrr.metric
+      hash: md5
+      md5: ac9b4d1a7e52e0cda6562a18b2e2833f
+      size: 23
