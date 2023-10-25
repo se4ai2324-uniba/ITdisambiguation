@@ -18,11 +18,13 @@ stages:
     - data/test_preprocessed_images/:
         cache: false
   train:
-    cmd: python src/models/train.py 2 2e-5
+    cmd: python src/models/train.py
     deps:
     - data/Train/resized_train.data.v1.txt
     - data/Train/resized_train.gold.v1.txt
     - data/train_preprocessed_images/
+    - src/models/conf.py
+    - src/models/utils.py
     - src/models/train.py
     outs:
     - models/model.pt
@@ -33,6 +35,8 @@ stages:
     - data/Test/en.test.gold.v1.1.txt
     - data/test_preprocessed_images/
     - models/model.pt
+    - src/models/conf.py
+    - src/models/utils.py
     - src/models/evaluate.py
     metrics:
     - metrics/hits1.metric:

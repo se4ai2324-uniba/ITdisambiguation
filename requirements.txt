@@ -10,7 +10,9 @@ flake8
 python-dotenv>=0.5.1
 
 # other requirements
+mlflow
+dagshub
 torch
-open_clip
+open_clip_torch
 sentence_transformers
 nltk

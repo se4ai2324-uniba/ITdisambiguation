@@ -1,7 +1,10 @@
+import dagshub
+import mlflow
 import torch
 import open_clip
 from torch.utils.data import DataLoader
-from ..utils import VWSDDataset, Disambiguator
+from conf import config
+from utils import VWSDDataset, Disambiguator
 dev = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def compute_metrics(scores, pos):
@@ -14,11 +17,11 @@ def compute_metrics(scores, pos):
 
 BATCH_SIZE = 32
 
-images_path = '../../data/test_preprocessed_images/'
-test_data = '../../data/Test/en.test.data.v1.1.txt'
-target_images = '../../data/Test/en.test.gold.v1.1.txt'
-model_file = '../../models/model.pt'
-output_folder = '../../metrics/'
+images_path = config['TEST_IMAGES_PATH']
+test_data = config['TEST_DATA']
+target_images = config['TEST_TARGET_IMAGES']
+model_file = config['MODEL_FILE']
+output_folder = config['METRICS_FOLDER']
 
 with torch.no_grad():
     disambiguator = Disambiguator(device=dev)
@@ -44,3 +47,18 @@ with torch.no_grad():
     for i in results.keys():
         with open(f"{output_folder}{i}.metric", 'w') as f:
             f.write(f"{i.upper()}: {results[i]}\n")
+
+    dagshub.init("ITdisambiguation", "se4ai2324-uniba", mlflow=True)
+    mlflow.start_run()
+    # Log model file 
+    mlflow.log_artifact(model_file)
+    mlflow.pytorch.log_model(model.state_dict(), "model")
+    # Log model's parameters
+    mlflow.log_params({
+        'batch_size': config['BATCH_SIZE'],
+        'epochs': config['EPOCHS'],
+        'learning_rate': config['LEARNING_RATE']
+    })
+    # Log results
+    mlflow.log_metrics(results)
+    mlflow.end_run()

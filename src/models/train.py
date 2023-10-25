@@ -1,23 +1,20 @@
-import sys
 import torch
 import open_clip
-from ..utils import VWSDDataset, Disambiguator
+from conf import config
+from utils import VWSDDataset, Disambiguator
 from torch.utils.data import DataLoader
 from torch.optim import AdamW
 from torch.nn import NLLLoss
 
-if len(sys.argv) < 3:
-    sys.exit("Usage: python train.py EPOCHS LEARNING_RATE")
+BATCH_SIZE = config['BATCH_SIZE']
+GRAD_ACC = config['GRAD_ACC']
+EPOCHS = config['EPOCHS']
+LEARNING_RATE = config['LEARNING_RATE']
 
-BATCH_SIZE = 8
-GRAD_ACC = 8
-EPOCHS = int(sys.argv[1])           # 2
-LEARNING_RATE = float(sys.argv[2])  # 2e-5
-
-images_path = '../../data/train_preprocessed_data/'
-train_data = '../../data/Train/resized_train.data.v1.txt'
-target_images = '../../data/Train/resized_train.gold.v1.txt'
-model_file = '../../models/model.pt'
+images_path = config['TRAIN_IMAGES_PATH']
+train_data = config['TRAIN_DATA']
+target_images = config['TRAIN_TARGET_IMAGES']
+model_file = config['MODEL_FILE']
 
 dev = 'cuda' if torch.cuda.is_available() else 'cpu'
 disambiguator = Disambiguator(device=dev)
