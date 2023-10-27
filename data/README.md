@@ -35,8 +35,11 @@ Every sample has the following features:
 - **Target image:** the correct image among the ten
 
 <p align="center">
-  <img src="dataset.png" width="500px"/>
+  <img src="docs/dataset.png" width="500px"/>
 </p>
+
+## Dataset Cropping ##
+In order to reproduce the experiments the dataset has undergone resizing. This adjustment has been applied exclusively to the training set in order to allow to repeat the training phase in a light way. The test set remains unaltered, ensuring that the experiments are conducted on a consistent and realistic evaluation of the model's performance. To access the resized dataset please contact the team, it will provide access credentials for google drive, where data are stored.
 
 ## Using the Dataset
 This dataset can be used to train a model to associate an image to a word that has more than one intended meaning when we have only a limited context.
