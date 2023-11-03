@@ -16,3 +16,9 @@ torch
 open_clip_torch
 sentence_transformers
 nltk
+
+#test requirements
+deepchecks
+great-expectations
+pylint
+pytest
