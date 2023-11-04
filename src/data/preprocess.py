@@ -3,7 +3,8 @@ import torch
 import open_clip
 import sys
 import os
-from PIL import Image
+from PIL import ImageFile, Image
+from tqdm import tqdm
 
 args = sys.argv
 if len(args) < 4:
@@ -20,10 +21,15 @@ if not os.path.isdir(output_folder):
     os.makedirs(output_folder)
 
 print("[+] Starting image preprocessing... [+]")
+
 preproc = open_clip.image_transform(224, is_train)
-for i, img in enumerate(imgs):
-    if i % 100 == 0:
-        print(f"{i}/{len(imgs)}")
+
+Image.MAX_IMAGE_PIXELS = 122080000
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+
+for i in tqdm(range(len(imgs))):
+    img = imgs[i]
     preproc_image = preproc(Image.open(os.path.join(input_folder, img)))
     torch.save(preproc_image, os.path.join(output_folder, img))
+
 print("[+] Finished [+]")
