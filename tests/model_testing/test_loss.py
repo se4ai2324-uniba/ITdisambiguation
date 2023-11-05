@@ -26,12 +26,17 @@ opt = AdamW([{'params': model.text_projection},
              {'params': model.visual.attnpool.parameters()}],
             lr=LEARNING_RATE)
 loss_fn = NLLLoss()
-  
-test_epochs = 1
 
-# Train on the chosen device
-loss_history = train_model(model, data, tokenizer, disambiguator, opt, loss_fn, dev, test_epochs, BATCH_SIZE, GRAD_ACC)
+def test_loss():
+    test_epochs = 1
 
-# Check that the last loss is less than or equal to the first loss
-# This assumes that the loss should decrease or stay the same across epochs.
-assert loss_history[-1] <= loss_history[0]
+    # Train on the chosen device
+    loss_history = train_model(model, data, tokenizer, disambiguator, opt, loss_fn, dev, test_epochs, BATCH_SIZE, GRAD_ACC)
+
+    # Check that the last loss is less than or equal to the first loss
+    # This assumes that the loss should decrease or stay the same across epochs.
+    assert loss_history[-1] <= loss_history[0]
+
+
+if __name__ == "__main__":
+    pytest.main()

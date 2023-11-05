@@ -28,13 +28,18 @@ opt = AdamW([{'params': model.text_projection},
             lr=LEARNING_RATE)
 loss_fn = NLLLoss()
 
-loss_history, final_lr = train_model(model, data, tokenizer, disambiguator, opt, loss_fn, dev, num_epochs=1, grad_acc=GRAD_ACC)
 
-# Assert that the final learning rate is greater than a specified minimum
-min_learning_rate = 0.00001
-assert final_lr >= min_learning_rate, f"Final learning rate {final_lr} is less than minimum threshold {min_learning_rate}"
+def test_training_completion():
+    loss_history, final_lr = train_model(model, data, tokenizer, disambiguator, opt, loss_fn, dev, num_epochs=1, grad_acc=GRAD_ACC)
 
-# Assert that the loss history is not empty, implying training iterations occurred
-assert loss_history['train_loss'], "Train loss history is empty."
+    # Assert that the final learning rate is greater than a specified minimum
+    min_learning_rate = 0.00001
+    assert final_lr >= min_learning_rate, f"Final learning rate {final_lr} is less than minimum threshold {min_learning_rate}"
 
-assert os.path.exists(model_file), f"File del modello non trovato in {model_file}"
+    # Assert that the loss history is not empty, implying training iterations occurred
+    assert loss_history['train_loss'], "Train loss history is empty."
+
+    assert os.path.exists(model_file), f"File not found {model_file}"
+
+if __name__ == "__main__":
+    pytest.main()

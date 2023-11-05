@@ -27,19 +27,24 @@ opt = AdamW([{'params': model.text_projection},
             lr=LEARNING_RATE)
 loss_fn = NLLLoss()
 
-# Extract a single batch of data.
-word, context, images, true = data[0:BATCH_SIZE]
 
-# Increase the number of epochs for overfitting
-overfit_epochs = 3
+def test_overfit_batch():
+    # Extract a single batch of data.
+    word, context, images, true = data[0:BATCH_SIZE]
 
-# Train the model on the single batch
-loss_history, accuracy_history = train_on_single_batch(model, word, context, images, true, tokenizer, disambiguator, opt, loss_fn, dev, overfit_epochs, GRAD_ACC)
+    # Increase the number of epochs for overfitting
+    overfit_epochs = 2
 
-# Extract the final accuracy from the accuracy history
-final_accuracy = accuracy_history[-1]
+    # Train the model on the single batch
+    loss_history, accuracy_history = train_on_single_batch(model, word, context, images, true, tokenizer, disambiguator, opt, loss_fn, dev, overfit_epochs, GRAD_ACC)
 
-# Assert that the final accuracy is greater than 0.95
-assert final_accuracy > 0.95
+    # Extract the final accuracy from the accuracy history
+    final_accuracy = accuracy_history[-1]
 
+    # Assert that the final accuracy is greater than 0.95
+    assert final_accuracy > 0.95
+
+
+if __name__ == "__main__":
+    pytest.main()
 

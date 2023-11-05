@@ -27,15 +27,19 @@ opt = AdamW([{'params': model.text_projection},
             lr=LEARNING_RATE)
 loss_fn = NLLLoss()
 
+def test_device():
+    # Modify EPOCHS for testing to be just 1 for faster tests
+    test_epochs = 1
 
-# Modify EPOCHS for testing to be just 1 for faster tests
-test_epochs = 1
+    # Assert training on CPU
+    loss_history_cpu = train_model(model, data, tokenizer, disambiguator, opt, loss_fn, 'cpu', test_epochs, BATCH_SIZE, GRAD_ACC)
+    assert loss_history_cpu
 
-# Assert training on CPU
-loss_history_cpu = train_model(model, data, tokenizer, disambiguator, opt, loss_fn, 'cpu', test_epochs, BATCH_SIZE, GRAD_ACC)
-assert loss_history_cpu
+    # If CUDA is available, assert training on CUDA
+    if torch.cuda.is_available():
+        loss_history_cuda = train_model(model, data, tokenizer, disambiguator, opt, loss_fn, 'cuda', test_epochs, BATCH_SIZE, GRAD_ACC)
+        assert loss_history_cuda
 
-# If CUDA is available, assert training on CUDA
-if torch.cuda.is_available():
-    loss_history_cuda = train_model(model, data, tokenizer, disambiguator, opt, loss_fn, 'cuda', test_epochs, BATCH_SIZE, GRAD_ACC)
-    assert loss_history_cuda
+
+if __name__ == "__main__":
+    pytest.main()
