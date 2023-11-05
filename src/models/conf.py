@@ -1,5 +1,5 @@
 config = {
-	"TRAIN_IMAGES_PATH" : "data/train_preprocessed_data/",
+	"TRAIN_IMAGES_PATH" : "data/train_preprocessed_images/",
 	"TRAIN_DATA" : "data/Train/resized_train.data.v1.txt",
 	"TRAIN_TARGET_IMAGES" : "data/Train/resized_train.gold.v1.txt",
 	"TEST_IMAGES_PATH" : "data/test_preprocessed_images/",

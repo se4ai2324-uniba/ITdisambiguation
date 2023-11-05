@@ -65,11 +65,15 @@ class Disambiguator():
 			if len(ss) > 0:
 				return ss
 		return ss
+
+	def _remove_word_from_context(self, word, context):
+		return context.replace(word, '').strip()
+
 	def mpnet(self, word, context):
 		senses = []
 		for w, c in zip(word, context):
 			w_def_all = [x.definition() for x in self._get_synsets(w)]
-			c_def_all = [x.definition() for x in self._get_synsets(c.replace(w, '').strip())]
+			c_def_all = [x.definition() for x in self._get_synsets(self._remove_word_from_context(w, c))]
 			if len(w_def_all) == 1:
 				senses.append(w_def_all[0])
 				continue
