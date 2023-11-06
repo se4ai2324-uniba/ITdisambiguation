@@ -3,7 +3,8 @@ import torch
 import open_clip
 import sys
 sys.path.append('src')
-from models.evaluate import predict, VWSDDataset
+from models.evaluate import predict
+from utils import VWSDDataset
 from conf import config
 dev = 'cuda' if torch.cuda.is_available() else 'cpu'
 
