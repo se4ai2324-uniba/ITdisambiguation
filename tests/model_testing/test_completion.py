@@ -1,7 +1,7 @@
 import os
 import pytest
 from src.models.train import train_model
-from src.models.conf import config
+from src.conf import config
 
 def test_training_completion():
     num_epochs = 1  
