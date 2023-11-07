@@ -1,11 +1,9 @@
 import pytest
 import torch
 import open_clip
-import sys
-sys.path.append('src')
-from models.evaluate import predict
-from utils import VWSDDataset
-from conf import config
+from src.models.evaluate import predict
+from src.utils import VWSDDataset
+from src.conf import config
 dev = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def test_invariance():

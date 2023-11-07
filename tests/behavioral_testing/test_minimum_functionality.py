@@ -1,13 +1,11 @@
 import pytest
 import torch
 import open_clip
-import sys
-sys.path.append('src')
 from PIL import Image
 from urllib import request
 from os import remove
-from models.evaluate import predict
-from conf import config
+from src.models.evaluate import predict
+from src.conf import config
 dev = 'cuda' if torch.cuda.is_available() else 'cpu'
 img1 = 'mouse1.jpg'
 img2 = 'mouse2.jpg'
