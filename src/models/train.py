@@ -44,7 +44,7 @@ def train_model(num_epochs=config['EPOCHS'], batch_size = config['BATCH_SIZE'],d
     average_epoch_loss=0
     for epoch in range(num_epochs):
         i = 0
-        for word, context, images, true in DataLoader(data, batch_size=BATCH_SIZE, shuffle=True):
+        for word, context, images, true in DataLoader(data, batch_size=batch_size, shuffle=True):
             text = tokenizer([f'This is {c}, {exp}.' for c, exp in zip(context, disambiguator(word, context))]).to(dev)
             text_emb = model.encode_text(text, normalize=True)
             imgs_emb = model.encode_image(images.flatten(end_dim=1), normalize=True)
@@ -55,7 +55,7 @@ def train_model(num_epochs=config['EPOCHS'], batch_size = config['BATCH_SIZE'],d
             epoch_loss += l.item() * GRAD_ACC
             i += scores.size(0)
             print(f'[epoch {epoch} | {i}/{len(data)}] loss: {l}')
-            if i % (BATCH_SIZE * GRAD_ACC) == 0 or scores.size(0) < BATCH_SIZE:
+            if i % (batch_size * GRAD_ACC) == 0 or scores.size(0) < batch_size:
                 print('Optimization step')
                 opt.step()
                 opt.zero_grad()
