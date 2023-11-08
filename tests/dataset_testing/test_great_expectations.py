@@ -29,5 +29,4 @@ def test_great_expectations():
     assert res['success']
 
 if __name__ == '__main__':
-    test_great_expectations()
-    #pytest.main()
+    pytest.main()
