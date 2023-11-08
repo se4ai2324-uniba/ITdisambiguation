@@ -1,7 +1,7 @@
 import pytest
 import torch
 import os
-from src.models.conf import config
+from src.conf import config
 
 images_path = config["TRAIN_ORIGINAL_IMAGE_PATH"]
 def test_gold_file_format():

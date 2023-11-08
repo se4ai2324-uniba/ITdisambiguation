@@ -3,7 +3,7 @@ import torch
 import os
 import great_expectations as ge
 import pandas as pd 
-from src.models.conf import config
+from src.conf import config
 
 
 train_images_names = config["TRAIN_DATA"] 

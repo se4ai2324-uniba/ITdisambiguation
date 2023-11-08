@@ -1,7 +1,7 @@
 import pytest
 import torch
 import os
-from src.models.conf import config
+from src.conf import config
 
 train_images_names = config["TRAIN_DATA"] 
 
