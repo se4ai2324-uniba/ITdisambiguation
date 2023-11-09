@@ -1,3 +1,5 @@
+""" Module containing the configuration """
+
 config = {
 	"TRAIN_IMAGES_PATH" : "data/train_preprocessed_images/",
 	"TRAIN_DATA" : "data/Train/resized_train.data.v1.txt",

@@ -1,0 +1,219 @@
+************* Module src.utils
+utils.py:17:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+utils.py:18:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:19:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:20:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:21:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:22:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:23:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:24:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:25:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:26:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:27:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:28:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:29:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:30:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:31:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:32:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:33:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+utils.py:34:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:35:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+utils.py:36:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:37:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:38:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:39:0: C0301: Line too long (110/100) (line-too-long)
+utils.py:39:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:40:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:41:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:42:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:43:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:44:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:46:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:47:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:50:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+utils.py:51:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:52:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+utils.py:53:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:54:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:55:0: C0301: Line too long (109/100) (line-too-long)
+utils.py:55:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:56:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:57:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+utils.py:58:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:60:36: C0303: Trailing whitespace (trailing-whitespace)
+utils.py:62:0: C0301: Line too long (109/100) (line-too-long)
+utils.py:63:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:64:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:65:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:66:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:67:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:69:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+utils.py:70:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:72:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+utils.py:73:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:75:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+utils.py:76:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:78:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+utils.py:79:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:80:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:81:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:82:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:83:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:84:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:85:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:86:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:87:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:88:0: W0311: Bad indentation. Found 4 spaces, expected 16 (bad-indentation)
+utils.py:89:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:90:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:91:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:92:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:93:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:94:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+utils.py:95:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:96:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:97:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:98:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:99:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:100:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:101:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+utils.py:102:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+utils.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+utils.py:4:0: R0402: Use 'from sentence_transformers import util' instead (consider-using-from-import)
+utils.py:15:0: C0115: Missing class docstring (missing-class-docstring)
+utils.py:24:7: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+utils.py:24:27: C0103: Variable name "f1" doesn't conform to snake_case naming style (invalid-name)
+utils.py:24:31: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+utils.py:24:50: C0103: Variable name "f2" doesn't conform to snake_case naming style (invalid-name)
+utils.py:25:7: C0103: Variable name "l1" doesn't conform to snake_case naming style (invalid-name)
+utils.py:25:11: C0103: Variable name "l2" doesn't conform to snake_case naming style (invalid-name)
+utils.py:36:5: C0123: Use isinstance() rather than type() for a typecheck. (unidiomatic-typecheck)
+utils.py:49:0: C0115: Missing class docstring (missing-class-docstring)
+utils.py:55:8: R1718: Consider using a set comprehension (consider-using-set-comprehension)
+utils.py:52:1: R0201: Method could be a function (no-self-use)
+utils.py:63:6: C0103: Variable name "w" doesn't conform to snake_case naming style (invalid-name)
+utils.py:64:3: C0103: Variable name "ss" doesn't conform to snake_case naming style (invalid-name)
+utils.py:57:1: R0201: Method could be a function (no-self-use)
+utils.py:69:1: C0116: Missing function or method docstring (missing-function-docstring)
+utils.py:70:9: E1121: Too many positional arguments for method call (too-many-function-args)
+utils.py:72:1: R0201: Method could be a function (no-self-use)
+utils.py:75:1: C0116: Missing function or method docstring (missing-function-docstring)
+utils.py:76:9: E1121: Too many positional arguments for method call (too-many-function-args)
+utils.py:78:1: C0116: Missing function or method docstring (missing-function-docstring)
+utils.py:80:6: C0103: Variable name "w" doesn't conform to snake_case naming style (invalid-name)
+utils.py:80:9: C0103: Variable name "c" doesn't conform to snake_case naming style (invalid-name)
+utils.py:95:5: C0123: Use isinstance() rather than type() for a typecheck. (unidiomatic-typecheck)
+utils.py:95:32: C0123: Use isinstance() rather than type() for a typecheck. (unidiomatic-typecheck)
+utils.py:97:5: C0123: Use isinstance() rather than type() for a typecheck. (unidiomatic-typecheck)
+utils.py:97:35: C0123: Use isinstance() rather than type() for a typecheck. (unidiomatic-typecheck)
+utils.py:2:0: W0611: Unused import json (unused-import)
+
+
+Report
+======
+89 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |2      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|method   |11     |NC         |NC         |72.73       |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|function |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |94     |90.38 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|docstring |2      |1.92  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|comment   |2      |1.92  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|empty     |6      |5.77  |NC       |NC         |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |NC       |NC         |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |NC       |NC         |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |23     |NC       |NC         |
++-----------+-------+---------+-----------+
+|refactor   |5      |NC       |NC         |
++-----------+-------+---------+-----------+
+|warning    |78     |NC       |NC         |
++-----------+-------+---------+-----------+
+|error      |2      |NC       |NC         |
++-----------+-------+---------+-----------+
+
+
+
+Messages
+--------
+
++---------------------------------+------------+
+|message id                       |occurrences |
++=================================+============+
+|bad-indentation                  |75          |
++---------------------------------+------------+
+|invalid-name                     |8           |
++---------------------------------+------------+
+|unidiomatic-typecheck            |5           |
++---------------------------------+------------+
+|no-self-use                      |3           |
++---------------------------------+------------+
+|missing-function-docstring       |3           |
++---------------------------------+------------+
+|line-too-long                    |3           |
++---------------------------------+------------+
+|unspecified-encoding             |2           |
++---------------------------------+------------+
+|too-many-function-args           |2           |
++---------------------------------+------------+
+|missing-class-docstring          |2           |
++---------------------------------+------------+
+|unused-import                    |1           |
++---------------------------------+------------+
+|trailing-whitespace              |1           |
++---------------------------------+------------+
+|missing-module-docstring         |1           |
++---------------------------------+------------+
+|consider-using-set-comprehension |1           |
++---------------------------------+------------+
+|consider-using-from-import       |1           |
++---------------------------------+------------+
+
+
+
+
+------------------------------------
+Your code has been rated at -3.03/10

@@ -1,0 +1,105 @@
+************* Module test_target_file_format
+test_target_file_format.py:6:51: C0303: Trailing whitespace (trailing-whitespace)
+test_target_file_format.py:17:0: C0304: Final newline missing (missing-final-newline)
+test_target_file_format.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+test_target_file_format.py:8:0: C0116: Missing function or method docstring (missing-function-docstring)
+test_target_file_format.py:9:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+test_target_file_format.py:2:0: W0611: Unused import torch (unused-import)
+test_target_file_format.py:3:0: W0611: Unused import os (unused-import)
+test_target_file_format.py:3:0: C0411: standard import "import os" should be placed before "import pytest" (wrong-import-order)
+
+
+Report
+======
+12 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|method   |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|function |1      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |14     |73.68 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|docstring |0      |0.00  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|comment   |0      |0.00  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|empty     |5      |26.32 |NC       |NC         |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |NC       |NC         |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |NC       |NC         |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |5      |NC       |NC         |
++-----------+-------+---------+-----------+
+|refactor   |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+|warning    |3      |NC       |NC         |
++-----------+-------+---------+-----------+
+|error      |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+
+
+
+Messages
+--------
+
++---------------------------+------------+
+|message id                 |occurrences |
++===========================+============+
+|unused-import              |2           |
++---------------------------+------------+
+|wrong-import-order         |1           |
++---------------------------+------------+
+|unspecified-encoding       |1           |
++---------------------------+------------+
+|trailing-whitespace        |1           |
++---------------------------+------------+
+|missing-module-docstring   |1           |
++---------------------------+------------+
+|missing-function-docstring |1           |
++---------------------------+------------+
+|missing-final-newline      |1           |
++---------------------------+------------+
+
+
+
+
+-----------------------------------
+Your code has been rated at 3.33/10

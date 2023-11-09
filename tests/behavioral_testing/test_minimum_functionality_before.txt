@@ -1,0 +1,112 @@
+************* Module test_minimum_functionality
+test_minimum_functionality.py:19:0: C0301: Line too long (121/100) (line-too-long)
+test_minimum_functionality.py:26:0: C0301: Line too long (114/100) (line-too-long)
+test_minimum_functionality.py:27:0: C0301: Line too long (114/100) (line-too-long)
+test_minimum_functionality.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+test_minimum_functionality.py:9:0: C0103: Constant name "dev" doesn't conform to UPPER_CASE naming style (invalid-name)
+test_minimum_functionality.py:10:0: C0103: Constant name "img1" doesn't conform to UPPER_CASE naming style (invalid-name)
+test_minimum_functionality.py:11:0: C0103: Constant name "img2" doesn't conform to UPPER_CASE naming style (invalid-name)
+test_minimum_functionality.py:13:0: C0116: Missing function or method docstring (missing-function-docstring)
+test_minimum_functionality.py:5:0: C0411: standard import "from urllib import request" should be placed before "import pytest" (wrong-import-order)
+test_minimum_functionality.py:6:0: C0411: standard import "from os import remove" should be placed before "import pytest" (wrong-import-order)
+
+
+Report
+======
+32 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|method   |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|function |1      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+External dependencies
+---------------------
+::
+
+    PIL
+      \-Image (test_minimum_functionality)
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |34     |73.91 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|docstring |0      |0.00  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|comment   |3      |6.52  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|empty     |9      |19.57 |NC       |NC         |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |NC       |NC         |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |NC       |NC         |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |10     |NC       |NC         |
++-----------+-------+---------+-----------+
+|refactor   |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+|warning    |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+|error      |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+
+
+
+Messages
+--------
+
++---------------------------+------------+
+|message id                 |occurrences |
++===========================+============+
+|line-too-long              |3           |
++---------------------------+------------+
+|invalid-name               |3           |
++---------------------------+------------+
+|wrong-import-order         |2           |
++---------------------------+------------+
+|missing-module-docstring   |1           |
++---------------------------+------------+
+|missing-function-docstring |1           |
++---------------------------+------------+
+
+
+
+
+-----------------------------------
+Your code has been rated at 6.88/10

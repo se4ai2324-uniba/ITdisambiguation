@@ -1,16 +1,22 @@
+""" Module used to do the invariance test """
+
 import pytest
 import torch
 import open_clip
 from src.models.evaluate import predict
 from src.utils import VWSDDataset
 from src.conf import config
-dev = 'cuda' if torch.cuda.is_available() else 'cpu'
+DEV = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def test_invariance():
+
+    """ Method used to do the invariance test """
+
     # Changing the context word should change model's output
-    model, _, _ = open_clip.create_model_and_transforms('RN50', 'openai', device=dev)
-    model.load_state_dict(torch.load(config['MODEL_FILE'], map_location=dev))
-    data = VWSDDataset(config['TEST_IMAGES_PATH'], config['TEST_DATA'], config['TEST_TARGET_IMAGES'], device=dev)
+    model, _, _ = open_clip.create_model_and_transforms('RN50', 'openai', device=DEV)
+    model.load_state_dict(torch.load(config['MODEL_FILE'], map_location=DEV))
+    data = VWSDDataset(config['TEST_IMAGES_PATH'],
+                       config['TEST_DATA'], config['TEST_TARGET_IMAGES'], device=DEV)
 
     # Data entry relative to the word 'neptune'
     _, _, images, true = data[5]

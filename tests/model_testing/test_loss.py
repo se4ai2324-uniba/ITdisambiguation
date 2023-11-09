@@ -1,7 +1,12 @@
+""" Module used to test the loss function """
+
 import pytest
 from src.models.train import train_model
 
 def test_loss():
+
+    """ Method used to test the loss function """
+
     num_epochs = 2
 
     loss_history,_ = train_model(num_epochs=num_epochs)

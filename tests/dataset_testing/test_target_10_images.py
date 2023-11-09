@@ -1,18 +1,20 @@
+""" MOdule used to test the target 10 images """
+
 import pytest
-import torch
-import os
 from src.conf import config
 
-train_images_names = config["TRAIN_DATA"] 
+train_images_names = config["TRAIN_DATA"]
 
 
 def test_target_10_images():
-    with open(train_images_names, 'r') as f:
-        for line in f:
+
+    """ Method used to test the target 10 images """
+
+    with open(train_images_names, 'r', encoding='UTF-8') as file_r:
+        for line in file_r:
             line = line.strip()
             parts = line.split('\t')
             if len(parts) >= 3:
-                label = parts[0]
                 image_filenames = parts[2:]
                 assert len(image_filenames) == 10
 

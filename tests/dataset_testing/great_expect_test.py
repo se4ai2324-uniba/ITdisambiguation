@@ -1,13 +1,13 @@
-import pytest
-import torch
-import os
+""" Module used to test with great_expectations """
+
 import great_expectations as ge
-import pandas as pd 
+import pandas as pd
 from src.conf import config
 
 
-train_images_names = config["TRAIN_DATA"] 
-column_names = ["target", "contexts", "img1", "img2", "img3", "img4", "img5", "img6", "img7", "img8", "img9", "img10"]
+train_images_names = config["TRAIN_DATA"]
+column_names = ["target", "contexts", "img1", "img2", "img3",
+                "img4", "img5", "img6", "img7", "img8", "img9", "img10"]
 df = pd.read_csv(train_images_names, sep='\t', header=None, names=column_names)
 dataset = ge.dataset.PandasDataset(df)
 

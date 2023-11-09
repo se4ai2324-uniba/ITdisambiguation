@@ -1,0 +1,99 @@
+************* Module test_completion
+test_completion.py:7:18: C0303: Trailing whitespace (trailing-whitespace)
+test_completion.py:8:37: C0303: Trailing whitespace (trailing-whitespace)
+test_completion.py:13:0: C0301: Line too long (126/100) (line-too-long)
+test_completion.py:23:0: C0305: Trailing newlines (trailing-newlines)
+test_completion.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+test_completion.py:6:0: C0116: Missing function or method docstring (missing-function-docstring)
+
+
+Report
+======
+14 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|method   |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|function |1      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |16     |64.00 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|docstring |0      |0.00  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|comment   |2      |8.00  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|empty     |7      |28.00 |NC       |NC         |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |NC       |NC         |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |NC       |NC         |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |6      |NC       |NC         |
++-----------+-------+---------+-----------+
+|refactor   |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+|warning    |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+|error      |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+
+
+
+Messages
+--------
+
++---------------------------+------------+
+|message id                 |occurrences |
++===========================+============+
+|trailing-whitespace        |2           |
++---------------------------+------------+
+|trailing-newlines          |1           |
++---------------------------+------------+
+|missing-module-docstring   |1           |
++---------------------------+------------+
+|missing-function-docstring |1           |
++---------------------------+------------+
+|line-too-long              |1           |
++---------------------------+------------+
+
+
+
+
+-----------------------------------
+Your code has been rated at 5.71/10

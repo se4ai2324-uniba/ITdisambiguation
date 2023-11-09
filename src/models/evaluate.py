@@ -1,15 +1,17 @@
+""" Module used to evaluate the model """
+
+import sys
+from torch.utils.data import DataLoader
+from conf import config
+from utils import VWSDDataset, Disambiguator
 import dagshub
 import mlflow
 import torch
 import open_clip
-import sys
 sys.path.append('src')
-from torch.utils.data import DataLoader
-from conf import config
-from utils import VWSDDataset, Disambiguator
 
-dev = 'cuda' if torch.cuda.is_available() else 'cpu'
-disambiguator = Disambiguator(device=dev)
+DEV = 'cuda' if torch.cuda.is_available() else 'cpu'
+disambiguator = Disambiguator(device=DEV)
 tokenizer = open_clip.get_tokenizer('RN50')
 
 BATCH_SIZE = 32
@@ -20,26 +22,34 @@ model_file = config['MODEL_FILE']
 output_folder = config['METRICS_FOLDER']
 
 
-def compute_metrics(scores, pos):
-    sorted_score = scores.argsort(descending=True)
+def compute_metrics(scores_tot, pos):
+
+    """ Method used to compute metrics """
+
+    sorted_score = scores_tot.argsort(descending=True)
     ranks = (sorted_score == pos.unsqueeze(0).T).nonzero(as_tuple=True)[1] + 1
-    h1 = (ranks == 1).nonzero().flatten().size(0) / scores.size(0)
-    h3 = (ranks <= 3).nonzero().flatten().size(0) / scores.size(0)
+    hits1 = (ranks == 1).nonzero().flatten().size(0) / scores_tot.size(0)
+    hits3 = (ranks <= 3).nonzero().flatten().size(0) / scores_tot.size(0)
 
-    return {'mrr': (1 / ranks).mean().item(), 'hits1': h1, 'hits3': h3}
+    return {'mrr': (1 / ranks).mean().item(), 'hits1': hits1, 'hits3': hits3}
 
-def predict(model, words, contexts, images):
-    text = tokenizer([f'This is {c}, {exp}.' for c, exp in zip(contexts, disambiguator(words, contexts))]).to(dev)
-    text_emb = model.encode_text(text, normalize=True)
-    imgs_emb = model.encode_image(images.flatten(end_dim=1), normalize=True)
-    scores = (100.0 * torch.einsum('ij,ikj->ik', text_emb, imgs_emb.view(text_emb.size(0), 10, -1))).softmax(-1)
-    return scores
+def predict(model_1, words, contexts, images_1):
+
+    """ Method used to make the prediction """
+
+    text = tokenizer([f'This is {c}, {exp}.'
+                      for c, exp in zip(contexts, disambiguator(words, contexts))]).to(DEV)
+    text_emb = model_1.encode_text(text, normalize=True)
+    imgs_emb = model_1.encode_image(images_1.flatten(end_dim=1), normalize=True)
+    scores_tot = (100.0 * torch.einsum('ij,ikj->ik', text_emb,
+                                   imgs_emb.view(text_emb.size(0), 10, -1))).softmax(-1)
+    return scores_tot
 
 if __name__ == '__main__':
     with torch.no_grad():
-        model, _, _ = open_clip.create_model_and_transforms('RN50', 'openai', device=dev)
-        model.load_state_dict(torch.load(model_file, map_location=dev))
-        data = VWSDDataset(images_path, test_data, target_images, device=dev)
+        model, _, _ = open_clip.create_model_and_transforms('RN50', 'openai', device=DEV)
+        model.load_state_dict(torch.load(model_file, map_location=DEV))
+        data = VWSDDataset(images_path, test_data, target_images, device=DEV)
         all_scores = torch.empty((0,10))
         all_pos = torch.empty((0,))
         i = 0
@@ -51,15 +61,15 @@ if __name__ == '__main__':
             i += scores.size(0)
             print(f'{i}/{len(data)}')
         print("[+] Finished evaluation [+]")
-    
+
         results = compute_metrics(all_scores, all_pos)
-        for i in results.keys():
-            with open(f"{output_folder}{i}.metric", 'w') as f:
-                f.write(f"{i.upper()}: {results[i]}\n")
-    
+        for k, _v in results.items():
+            with open(f"{output_folder}{k}.metric", 'w', encoding='UTF-8') as f:
+                f.write(f"{k.upper()}: {_v}\n")
+
         dagshub.init("ITdisambiguation", "se4ai2324-uniba", mlflow=True)
         mlflow.start_run()
-        # Log model file 
+        # Log model file
         mlflow.log_artifact(model_file)
         mlflow.pytorch.log_model(model, "model")
         # Log model's parameters

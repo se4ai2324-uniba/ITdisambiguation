@@ -1,8 +1,13 @@
+""" Module used to test the device """
+
 import pytest
 from src.models.train import train_model
 import torch
 
 def test_device():
+
+    """ Method used to test the device """
+
     # Modify EPOCHS for testing to be just 1 for faster tests
     num_epochs = 1
 
