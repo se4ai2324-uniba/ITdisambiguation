@@ -1,0 +1,127 @@
+************* Module src.models.evaluate
+evaluate.py:32:0: C0301: Line too long (114/100) (line-too-long)
+evaluate.py:35:0: C0301: Line too long (112/100) (line-too-long)
+evaluate.py:54:0: C0303: Trailing whitespace (trailing-whitespace)
+evaluate.py:59:0: C0303: Trailing whitespace (trailing-whitespace)
+evaluate.py:62:24: C0303: Trailing whitespace (trailing-whitespace)
+evaluate.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+evaluate.py:7:0: C0413: Import "from torch.utils.data import DataLoader" should be placed at the top of the module (wrong-import-position)
+evaluate.py:8:0: C0413: Import "from conf import config" should be placed at the top of the module (wrong-import-position)
+evaluate.py:9:0: C0413: Import "from utils import VWSDDataset, Disambiguator" should be placed at the top of the module (wrong-import-position)
+evaluate.py:11:0: C0103: Constant name "dev" doesn't conform to UPPER_CASE naming style (invalid-name)
+evaluate.py:23:20: W0621: Redefining name 'scores' from outer scope (line 48) (redefined-outer-name)
+evaluate.py:23:0: C0116: Missing function or method docstring (missing-function-docstring)
+evaluate.py:26:4: C0103: Variable name "h1" doesn't conform to snake_case naming style (invalid-name)
+evaluate.py:27:4: C0103: Variable name "h3" doesn't conform to snake_case naming style (invalid-name)
+evaluate.py:31:12: W0621: Redefining name 'model' from outer scope (line 40) (redefined-outer-name)
+evaluate.py:31:36: W0621: Redefining name 'images' from outer scope (line 47) (redefined-outer-name)
+evaluate.py:35:4: W0621: Redefining name 'scores' from outer scope (line 48) (redefined-outer-name)
+evaluate.py:31:0: C0116: Missing function or method docstring (missing-function-docstring)
+evaluate.py:56:8: C0206: Consider iterating with .items() (consider-using-dict-items)
+evaluate.py:56:17: C0201: Consider iterating the dictionary directly instead of calling .keys() (consider-iterating-dictionary)
+evaluate.py:57:17: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+evaluate.py:5:0: C0411: standard import "import sys" should be placed before "import dagshub" (wrong-import-order)
+
+
+Report
+======
+57 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |1          |=          |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|method   |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|function |2      |2          |=          |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |60     |78.95 |62       |-2.00      |
++----------+-------+------+---------+-----------+
+|docstring |4      |5.26  |7        |-3.00      |
++----------+-------+------+---------+-----------+
+|comment   |3      |3.95  |3        |=          |
++----------+-------+------+---------+-----------+
+|empty     |9      |11.84 |14       |-5.00      |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |0        |0          |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |0.000    |=          |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |17     |0        |0          |
++-----------+-------+---------+-----------+
+|refactor   |0      |0        |0          |
++-----------+-------+---------+-----------+
+|warning    |5      |0        |0          |
++-----------+-------+---------+-----------+
+|error      |0      |0        |0          |
++-----------+-------+---------+-----------+
+
+
+
+Messages
+--------
+
++------------------------------+------------+
+|message id                    |occurrences |
++==============================+============+
+|redefined-outer-name          |4           |
++------------------------------+------------+
+|wrong-import-position         |3           |
++------------------------------+------------+
+|trailing-whitespace           |3           |
++------------------------------+------------+
+|invalid-name                  |3           |
++------------------------------+------------+
+|missing-function-docstring    |2           |
++------------------------------+------------+
+|line-too-long                 |2           |
++------------------------------+------------+
+|wrong-import-order            |1           |
++------------------------------+------------+
+|unspecified-encoding          |1           |
++------------------------------+------------+
+|missing-module-docstring      |1           |
++------------------------------+------------+
+|consider-using-dict-items     |1           |
++------------------------------+------------+
+|consider-iterating-dictionary |1           |
++------------------------------+------------+
+
+
+
+
+-------------------------------------------------------------------
+Your code has been rated at 6.14/10 (previous run: 10.00/10, -3.86)

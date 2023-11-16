@@ -1,0 +1,138 @@
+************* Module src.models.train
+train.py:10:0: C0301: Line too long (133/100) (line-too-long)
+train.py:48:0: C0301: Line too long (119/100) (line-too-long)
+train.py:52:0: C0301: Line too long (124/100) (line-too-long)
+train.py:65:30: C0303: Trailing whitespace (trailing-whitespace)
+train.py:66:40: C0303: Trailing whitespace (trailing-whitespace)
+train.py:73:0: C0301: Line too long (144/100) (line-too-long)
+train.py:76:0: C0303: Trailing whitespace (trailing-whitespace)
+train.py:81:0: C0303: Trailing whitespace (trailing-whitespace)
+train.py:95:0: C0303: Trailing whitespace (trailing-whitespace)
+train.py:96:0: C0303: Trailing whitespace (trailing-whitespace)
+train.py:101:0: C0303: Trailing whitespace (trailing-whitespace)
+train.py:104:0: C0303: Trailing whitespace (trailing-whitespace)
+train.py:110:0: C0303: Trailing whitespace (trailing-whitespace)
+train.py:112:0: C0301: Line too long (115/100) (line-too-long)
+train.py:115:0: C0303: Trailing whitespace (trailing-whitespace)
+train.py:116:0: C0301: Line too long (120/100) (line-too-long)
+train.py:118:0: C0303: Trailing whitespace (trailing-whitespace)
+train.py:121:0: C0303: Trailing whitespace (trailing-whitespace)
+train.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+train.py:42:4: W0621: Redefining name 'loss_history' from outer scope (line 128) (redefined-outer-name)
+train.py:66:4: W0621: Redefining name 'final_lr' from outer scope (line 128) (redefined-outer-name)
+train.py:10:0: R0914: Too many local variables (32/15) (too-many-locals)
+train.py:24:4: C0103: Variable name "GRAD_ACC" doesn't conform to snake_case naming style (invalid-name)
+train.py:25:4: C0103: Variable name "LEARNING_RATE" doesn't conform to snake_case naming style (invalid-name)
+train.py:53:12: C0103: Variable name "l" doesn't conform to snake_case naming style (invalid-name)
+train.py:35:11: W0612: Unused variable 'preprocess' (unused-variable)
+train.py:106:4: W0621: Redefining name 'loss_history' from outer scope (line 128) (redefined-outer-name)
+train.py:73:0: R0914: Too many local variables (29/15) (too-many-locals)
+train.py:85:4: C0103: Variable name "GRAD_ACC" doesn't conform to snake_case naming style (invalid-name)
+train.py:86:4: C0103: Variable name "LEARNING_RATE" doesn't conform to snake_case naming style (invalid-name)
+train.py:94:11: W0612: Unused variable 'preprocess' (unused-variable)
+
+
+Report
+======
+79 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |1          |=          |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|method   |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|function |2      |2          |=          |100.00      |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+External dependencies
+---------------------
+::
+
+    src
+      \-conf (src.models.train)
+      \-utils (src.models.train)
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |83     |62.88 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|docstring |24     |18.18 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|comment   |3      |2.27  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|empty     |22     |16.67 |NC       |NC         |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |0        |0          |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |0.000    |=          |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |24     |24       |24         |
++-----------+-------+---------+-----------+
+|refactor   |2      |2        |2          |
++-----------+-------+---------+-----------+
+|warning    |5      |5        |5          |
++-----------+-------+---------+-----------+
+|error      |0      |0        |0          |
++-----------+-------+---------+-----------+
+
+
+
+Messages
+--------
+
++-------------------------+------------+
+|message id               |occurrences |
++=========================+============+
+|trailing-whitespace      |12          |
++-------------------------+------------+
+|line-too-long            |6           |
++-------------------------+------------+
+|invalid-name             |5           |
++-------------------------+------------+
+|redefined-outer-name     |3           |
++-------------------------+------------+
+|unused-variable          |2           |
++-------------------------+------------+
+|too-many-locals          |2           |
++-------------------------+------------+
+|missing-module-docstring |1           |
++-------------------------+------------+
+
+
+
+
+------------------------------------------------------------------
+Your code has been rated at 6.08/10 (previous run: 6.08/10, +0.00)

@@ -1,8 +1,10 @@
-#!/usr/bin/python
-import torch
-import open_clip
+""" Module used to preprocess the data """
+
+# !/usr/bin/python
 import sys
 import os
+import torch
+import open_clip
 from PIL import ImageFile, Image
 from tqdm import tqdm
 
