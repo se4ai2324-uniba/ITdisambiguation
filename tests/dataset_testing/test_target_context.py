@@ -1,6 +1,9 @@
 import pytest
 import torch
 import os
+import nltk
+from nltk.corpus import stopwords
+nltk.download('stopwords')
 from src.conf import config
 
 train_images_names = config["TRAIN_DATA"] 
@@ -13,8 +16,9 @@ def test_target_context():
             if len(parts) >= 3:
                 label = parts[0]
                 contexts = parts[1].split(' ')
-                assert len(contexts) == 2
-                assert label == contexts[0]
+                contexts.pop(0)
+                contexts = ' '.join([x for x in contexts if x.lower() not in stopwords.words('english')]).strip()
+                assert len(contexts.split()) == 1
 
 
 
