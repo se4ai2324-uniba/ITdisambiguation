@@ -20,6 +20,11 @@ Pillow~=10.1.0
 tqdm~=4.66.1
 setuptools~=65.5.0
 
+# apis
+pydantic
+fastapi
+uvicorn
+
 #test requirements
 deepchecks
 great-expectations
