@@ -1,3 +1,5 @@
+import sys
+sys.path.append("src")
 import torch
 import open_clip
 from conf import config
