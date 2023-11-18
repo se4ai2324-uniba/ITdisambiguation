@@ -63,13 +63,6 @@ class Disambiguator():
     def __init__(self, device='cpu'):
         self.model = SentenceTransformer('all-mpnet-base-v2', device=device)
 
-    def _text_preproc(self, text, tokenize=True):
-        stemmer = PorterStemmer()
-        tokens = word_tokenize(text) if tokenize else text
-        bow = {[stemmer.stem(t.lower())
-                for t in tokens if t not in stopwords.words('english') and t.isalpha()]}
-        return bow
-
     def _get_synsets(self, word):
         variants = [word,
                     word.replace('-', '_'),
