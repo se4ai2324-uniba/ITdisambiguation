@@ -1,9 +1,7 @@
 import torch
 import open_clip
-from utils import Disambiguator
 from conf import config
 from fastapi import FastAPI
-from typing import Optional
 
 dev = "cuda" if torch.cuda.is_available() else "cpu"
 __pretrain_models = {"RN50": "openai",
@@ -11,7 +9,6 @@ __pretrain_models = {"RN50": "openai",
 
 model_dict = {}
 preproc = None
-disambiguator: Optional[Disambiguator] = None
 
 app = FastAPI(
     title="Image Text disambiguation APIs",
@@ -31,5 +28,3 @@ def _load_models_and_transformation():
         model_dict[model_name] = model
     # Load image transformation function
     preproc = open_clip.image_transform(224, False)
-    # Load disambiguator
-    disambiguator = Disambiguator(dev)
