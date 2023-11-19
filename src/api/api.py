@@ -1,22 +1,23 @@
 import sys
-
-from urllib3 import response
 sys.path.append("src")
 import torch
 import open_clip
+from datetime import datetime
 from PIL import Image
 from conf import config
 from models.evaluate import predict_context
-from schemas import PredictContextPayload
+from api.schemas import PredictContextPayload
 from http import HTTPStatus
-from fastapi import FastAPI, Request
+from pydantic import ValidationError
+from fastapi import FastAPI, HTTPException, status, Request, File, UploadFile, Depends, Form
+from fastapi.encoders import jsonable_encoder
 
 dev = "cuda" if torch.cuda.is_available() else "cpu"
 __pretrain_models = {"RN50": "openai",
                      "ViT-B-16": "laion2b_s34b_b88k"}
 
 model_dict = {}
-preproc = None
+preproc = open_clip.image_transform(224, False)
 
 app = FastAPI(
     title="Image Text disambiguation APIs",
@@ -34,26 +35,35 @@ def _load_models_and_transformation():
             model.load_state_dict(torch.load(config["MODEL_FILE"],
                                              map_location=dev))
         model_dict[model_name] = model
-    # Load image transformation function
-    preproc = open_clip.image_transform(224, False)
+
+def checker(data: str = Form(...)):
+    try:
+        return PredictContextPayload.model_validate_json(data)
+    except ValidationError as e:
+        raise HTTPException(
+            detail=jsonable_encoder(e.errors()),
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY
+        )
+
+def construct_response(request: Request, response: dict):
+    final_response = {
+        "message": response["message"],
+        "method": request.method,
+        "status-code": response["status-code"],
+        "timestamp": datetime.now().isoformat(),
+        "url": request.url._url
+    }
+    if "data" in response:
+        final_response["data"] = response["data"]
+
+    return final_response
 
 @app.post("/models/{model_name}/predict_context")
-def _predict_context(request: Request, model_name: str, payload: PredictContextPayload):
+def _predict_context(request: Request, model_name: str, payload: PredictContextPayload = Depends(checker), file: UploadFile = File(...)):
     if model_name in model_dict:
         word = payload.target_word
-        # Preparing contexts
-        contexts = payload.contexts.split(",")
-        if len(contexts) < 2:
-            return { 
-                "message": "Invalid context, make sure to send at least two different contexts",
-                "status-code": HTTPStatus.BAD_REQUEST
-            }
-        for i in range(len(contexts)):
-            contexts[i] = contexts[i].strip()
-            if word not in contexts[i]:
-                contexts[i] = f"{word} {contexts[i]}"
-
-        image = preproc(Image.open(payload.image))
+        contexts = payload.contexts
+        image = preproc(Image.open(file.file))
 
         scores = predict_context(model_dict[model_name], word, contexts, image)
         predicted_index = scores.argmax().item()
@@ -75,4 +85,4 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
             "status-code": HTTPStatus.BAD_REQUEST
         }
 
-    return response
+    return construct_response(request, response)
