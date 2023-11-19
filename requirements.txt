@@ -24,6 +24,7 @@ setuptools~=65.5.0
 pydantic
 fastapi
 uvicorn
+python-multipart
 
 #test requirements
 deepchecks
