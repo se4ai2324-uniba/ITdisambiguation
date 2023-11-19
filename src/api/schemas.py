@@ -22,3 +22,25 @@ class PredictContextPayload(BaseModel):
                 contexts[i] = f"{word} {contexts[i]}"
         return contexts
 
+
+class PredictImagesPayload(BaseModel):
+    target_word: str
+    context: str
+
+    @validator("target_word")
+    def target_word_nonempty(cls, v):
+        if not v.strip():  # Utilizza strip() per gestire anche le stringhe con solo spazi
+            raise ValueError("target_word must be a valid string")
+        return v
+
+    @validator("context")
+    def check_context(cls, context, values):
+        if not context.strip():  # Utilizza strip() per gestire anche le stringhe con solo spazi
+            raise ValueError("You should send the context")
+
+        word = values.get("target_word", "").strip()  # Gestisci il caso in cui target_word sia None o solo spazi
+        if word and word not in context:
+            context = f"{word} {context}"
+
+        return context
+
