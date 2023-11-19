@@ -59,11 +59,11 @@ def construct_response(request: Request, response: dict):
     return final_response
 
 @app.post("/models/{model_name}/predict_context")
-def _predict_context(request: Request, model_name: str, payload: PredictContextPayload = Depends(checker), file: UploadFile = File(...)):
+def _predict_context(request: Request, model_name: str, payload: PredictContextPayload = Depends(checker), image: UploadFile = File(...)):
     if model_name in model_dict:
         word = payload.target_word
         contexts = payload.contexts
-        image = preproc(Image.open(file.file))
+        image = preproc(Image.open(image.file))
 
         scores = predict_context(model_dict[model_name], word, contexts, image)
         predicted_index = scores.argmax().item()
