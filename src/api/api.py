@@ -43,8 +43,8 @@ def checker_context(data: str = Form(...)):
         return PredictContextPayload.model_validate_json(data)
     except ValidationError as e:
         raise HTTPException(
-            detail=jsonable_encoder(e.errors()),
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY
+            detail=jsonable_encoder(e.errors()),
         )
 
 def checker_images(data: str = Form(...)):
@@ -52,8 +52,8 @@ def checker_images(data: str = Form(...)):
         return PredictImagesPayload.model_validate_json(data)
     except ValidationError as e:
         raise HTTPException(
-            detail=jsonable_encoder(e.errors()),
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY
+            detail=jsonable_encoder(e.errors()),
         )
 
 def construct_response(request: Request, response: dict):
@@ -71,30 +71,28 @@ def construct_response(request: Request, response: dict):
 
 @app.post("/models/{model_name}/predict_context")
 def _predict_context(request: Request, model_name: str, payload: PredictContextPayload = Depends(checker_context), image: UploadFile = File(...)):
-    if model_name in model_dict:
-        word = payload.target_word
-        contexts = payload.contexts
-        image = preproc(Image.open(image.file))
 
-        scores = predict_context(model_dict[model_name], word, contexts, image)
-        predicted_index = scores.argmax().item()
+    if model_name not in model_dict:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
 
-        response = {
-            "message": HTTPStatus.OK.phrase,
-            "status-code": HTTPStatus.OK,
-            "data": {
-                "model_name": model_name,
-                "target_word": word,
-                "contexts": ", ".join(contexts),
-                "predicted_context": contexts[predicted_index],
-                "predicted_index": predicted_index
-            }
+    word = payload.target_word
+    contexts = payload.contexts
+    image = preproc(Image.open(image.file))
+
+    scores = predict_context(model_dict[model_name], word, contexts, image)
+    predicted_index = scores.argmax().item()
+
+    response = {
+        "message": HTTPStatus.OK.phrase,
+        "status-code": HTTPStatus.OK,
+        "data": {
+            "model_name": model_name,
+            "target_word": word,
+            "contexts": ", ".join(contexts),
+            "predicted_context": contexts[predicted_index],
+            "predicted_index": predicted_index
         }
-    else:
-        response = {
-            "message": "Model not found",
-            "status-code": HTTPStatus.BAD_REQUEST
-        }
+    }
 
     return construct_response(request, response)
 
