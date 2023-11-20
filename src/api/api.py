@@ -43,16 +43,16 @@ def checker_context(data: str = Form(...)):
         return PredictContextPayload.model_validate_json(data)
     except ValidationError as e:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=jsonable_encoder(e.errors()),
         )
 
-def checker_images(data: str = Form(...)):
+def checker_images(target_word: str = Form(...),context: str = Form(...)):
     try:
-        return PredictImagesPayload.model_validate_json(data)
+        return PredictImagesPayload(target_word=target_word,context=context)
     except ValidationError as e:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=jsonable_encoder(e.errors()),
         )
 
@@ -101,10 +101,10 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
 async def _predict_images(request: Request, model_name: str, payload: PredictImagesPayload = Depends(checker_images), images: List[UploadFile] = File(...)):
     
     if model_name not in model_dict:
-        raise HTTPException(status_code=HTTPStatus.UNPROCESSABLE_ENTITY, detail="Model not found")
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Model not found")
     
     if len(images)>10 or len(images)<2:
-        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail= "You should send a number of images between 1 and 10")
+        raise HTTPException(status_code=HTTPStatus.UNPROCESSABLE_ENTITY, detail= "You should send a number of images between 1 and 10")
     
     word = payload.target_word
     context = payload.context
@@ -116,18 +116,21 @@ async def _predict_images(request: Request, model_name: str, payload: PredictIma
         image_pil = Image.open(BytesIO(image_content))
         processed_image = preproc(image_pil)
 
-
-        assert processed_image.ndim == 3 and processed_image.shape[0] == 3, "L'immagine preprocessata non ha la forma corretta."
         processed_images.append(processed_image)
 
-
     images_tensor = torch.stack(processed_images).unsqueeze(0)  
-
     scores = predict(model_dict[model_name], [word], [context], images_tensor)
     best_scores, best_indices = torch.max(scores, dim=1)
 
     response = {
-        "message": f"Success - Best scores and indices: {list(zip(best_scores.tolist(), best_indices.tolist()))}",
-        "status-code": 200
+        "message": HTTPStatus.OK.phrase,
+        "status-code": HTTPStatus.OK,
+        "data": {
+            "model_name": model_name,
+            "target_word": word,
+            "context": context,
+            "predicted_context": best_indices.tolist()[0],
+            "score": best_scores.tolist()[0]
+        }
     }
     return construct_response(request, response)
