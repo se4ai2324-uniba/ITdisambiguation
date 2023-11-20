@@ -97,9 +97,26 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
     return construct_response(request, response)
 
 
-@app.post("/models/{model_name}/predict_images")
+@app.post("/models/{model_name}/predict_images",tags=["images"],summary="Predict the most relevant image given a list of images,a context and a target word", response_description="The index and the score")
 async def _predict_images(request: Request, model_name: str, payload: PredictImagesPayload = Depends(checker_images), images: List[UploadFile] = File(...)):
-    
+    """
+    Predict Images API for a specific model.
+
+    This endpoint receives a collection of images, a context, and a target word.
+    After processing the images with the model, the endpoint returns the index and score
+    of the image deemed most relevant in relation to the provided target word and context.
+
+    - **images**: A list of uploaded images. Each image will be evaluated by the model 
+    to determine its relevance to the context and the target word.
+    - **context**: The context in which the target word is used. 
+    This context helps the model to interpret the target word as accurately as possible.
+    - **target_word**: The target word of interest. The model will try to identify the 
+    most relevant image that corresponds to this word in the specified context.
+
+    The endpoint returns the index of the image with the highest score, indicating which image 
+    has been evaluated as most relevant by the model.
+    """
+
     if model_name not in model_dict:
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Model not found")
     
