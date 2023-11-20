@@ -5,8 +5,8 @@ import open_clip
 from datetime import datetime
 from PIL import Image
 from conf import config
-from models.evaluate import predict_context,predict
-from api.schemas import PredictContextPayload,PredictImagesPayload
+from models.evaluate import predict_context, predict
+from api.schemas import PredictContextPayload, PredictImagesPayload
 from http import HTTPStatus
 from pydantic import ValidationError
 from fastapi import FastAPI, HTTPException, status, Request, File, UploadFile, Depends, Form
@@ -109,7 +109,8 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
             "target_word": word,
             "contexts": ", ".join(contexts),
             "predicted_context": contexts[predicted_index],
-            "predicted_index": predicted_index
+            "predicted_score": scores.squeeze()[predicted_index].item(),
+            "predicted_context_index": predicted_index
         }
     }
 
@@ -168,8 +169,8 @@ async def _predict_images(request: Request, model_name: str, payload: PredictIma
             "model_name": model_name,
             "target_word": word,
             "context": context,
-            "predicted_context": best_indices.tolist()[0],
-            "score": best_scores.tolist()[0]
+            "predicted_image_index": best_indices.tolist()[0],
+            "predicted_score": best_scores.tolist()[0]
         }
     }
     return construct_response(request, response)
