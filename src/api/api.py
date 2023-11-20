@@ -38,22 +38,22 @@ def _load_models_and_transformation():
                                              map_location=dev))
         model_dict[model_name] = model
 
-def checker_context(data: str = Form(...)):
+def checker_context(target_word: str = Form(...), contexts: str = Form(...)):
     try:
-        return PredictContextPayload.model_validate_json(data)
+        return PredictContextPayload(target_word=target_word, contexts=contexts)
     except ValidationError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=jsonable_encoder(e.errors()),
+            detail=jsonable_encoder(e.errors())
         )
 
-def checker_images(target_word: str = Form(...),context: str = Form(...)):
+def checker_images(target_word: str = Form(...), context: str = Form(...)):
     try:
-        return PredictImagesPayload(target_word=target_word,context=context)
+        return PredictImagesPayload(target_word=target_word, context=context)
     except ValidationError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=jsonable_encoder(e.errors()),
+            detail=jsonable_encoder(e.errors())
         )
 
 def construct_response(request: Request, response: dict):
@@ -69,8 +69,27 @@ def construct_response(request: Request, response: dict):
 
     return final_response
 
-@app.post("/models/{model_name}/predict_context")
+@app.post("/models/{model_name}/predict_context",
+          tags=["predictions"],
+          summary="Predict the most relevant context given a list of contexts, an image and a target word",
+          response_description="The most relevant context and its associated index")
 def _predict_context(request: Request, model_name: str, payload: PredictContextPayload = Depends(checker_context), image: UploadFile = File(...)):
+    """
+    Predict Context API for a specific model.
+
+    This endpoint receives a list of contexts, an image, and a target word.
+    After processing the inputs with the model, the endpoint returns the most probable
+    context in relation to the image and the target word.
+
+    - **image**: An image used by the model to capture the right context.
+    - **context**: A list of candidate contexts. The model will select the most
+    relevant given the image and the target word.
+    - **target_word**: The target word of interest. The model will try to identify the 
+    most relevant context that corresponds to this word in the specified context.
+
+    The endpoint returns the index of the context with the highest score and
+    the context itself.
+    """
 
     if model_name not in model_dict:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
@@ -97,7 +116,10 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
     return construct_response(request, response)
 
 
-@app.post("/models/{model_name}/predict_images",tags=["images"],summary="Predict the most relevant image given a list of images,a context and a target word", response_description="The index and the score")
+@app.post("/models/{model_name}/predict_images",
+          tags=["predictions"],
+          summary="Predict the most relevant image given a list of images, a context and a target word",
+          response_description="The index of the image and the scores")
 async def _predict_images(request: Request, model_name: str, payload: PredictImagesPayload = Depends(checker_images), images: List[UploadFile] = File(...)):
     """
     Predict Images API for a specific model.
