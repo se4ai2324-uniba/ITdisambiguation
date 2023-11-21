@@ -7,7 +7,7 @@ from datetime import datetime
 from PIL import Image
 from conf import config
 from models.evaluate import predict_context, predict
-from api.schemas import PredictContextPayload, PredictImagesPayload,PredictImageResponseModel,PredictImageResponseData,GetModelInfosResponseModel,GetModelInfosData,ModelMetrics
+from api.schemas import PredictContextPayload, PredictImagesPayload,PredictImageResponseModel,PredictImageResponseData,GetModelInfosResponseModel,GetModelInfosData,ModelMetrics,GetModelNamesResponseModel,GetModelNamesData
 from http import HTTPStatus
 from pydantic import ValidationError
 from fastapi import FastAPI, HTTPException, status, Request, File, UploadFile, Depends, Form
@@ -72,6 +72,19 @@ def construct_response(request: Request, response: dict):
 
 def value_from_metric_content(metric_content: str):
     return float(re.search(r'\d+\.\d+', metric_content).group())
+
+@app.get("/models",
+         tags=["Infos"],
+         summary="Gets a list of all the available models",
+         response_model=GetModelNamesResponseModel)
+def _get_models(request: Request):
+    model_names = list(model_dict.keys())
+    response = GetModelNamesResponseModel(
+        data = GetModelNamesData(
+            model_names = model_names
+        )
+    )
+    return response
 
 @app.get("/models/{model_name}",
          tags=["Infos"],

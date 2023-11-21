@@ -1,6 +1,7 @@
 from pydantic import BaseModel, validator
 from nltk.corpus import stopwords
 from http import HTTPStatus
+from typing import List
 
 class PredictContextPayload(BaseModel):
     target_word: str
@@ -89,3 +90,11 @@ class GetModelInfosResponseModel(BaseModel):
     message: str = HTTPStatus.OK.phrase
     status_code: int = HTTPStatus.OK.value
     data: GetModelInfosData
+
+class GetModelNamesData(BaseModel):
+    model_names: List[str]
+
+class GetModelNamesResponseModel(BaseModel):
+    message: str = HTTPStatus.OK.phrase
+    status_code: int = HTTPStatus.OK.value
+    data: GetModelNamesData
