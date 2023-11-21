@@ -1,4 +1,5 @@
 from pydantic import BaseModel, validator
+from nltk.corpus import stopwords
 
 class PredictContextPayload(BaseModel):
     target_word: str
@@ -6,7 +7,7 @@ class PredictContextPayload(BaseModel):
 
     @validator("target_word")
     def target_word_nonempty(cls, v):
-        if len(v) == 0:
+        if not v.strip():
             raise ValueError("target_word must be a valid string")
         return v
 
@@ -16,10 +17,19 @@ class PredictContextPayload(BaseModel):
         contexts = contexts.split(",")
         if len(contexts) < 2:
             raise ValueError("You should send at least two contexts")
+
         for i in range(len(contexts)):
-            contexts[i] = contexts[i].strip()
-            if word not in contexts[i]:
-                contexts[i] = f"{word} {contexts[i]}"
+            c = contexts[i].strip()
+            if not c:
+                raise ValueError("One of the contexts is empty")
+
+            is_valid = [w for w in c.split(" ") if w not in stopwords.words("english") and w != word]
+            if len(is_valid) > 1:
+                raise ValueError("The context must contain at most one meaningful word")
+
+            if word not in c:
+                c = f"{word} {c}"
+            contexts[i] = c
         return contexts
 
 
@@ -35,10 +45,16 @@ class PredictImagesPayload(BaseModel):
 
     @validator("context")
     def check_context(cls, context, values):
-        if not context.strip():  # Utilizza strip() per gestire anche le stringhe con solo spazi
+        word = values.get("target_word", "").strip()  # Gestisci il caso in cui target_word sia None o solo spazi
+        c = context.strip()
+
+        if not c:  # Utilizza strip() per gestire anche le stringhe con solo spazi
             raise ValueError("You should send the context")
 
-        word = values.get("target_word", "").strip()  # Gestisci il caso in cui target_word sia None o solo spazi
+        is_valid = [w for w in c.split(" ") if w not in stopwords.words("english") and w != word]
+        if len(is_valid) > 1:
+            raise ValueError("The context must contain at most one meaningful word")
+
         if word and word not in context:
             context = f"{word} {context}"
 
