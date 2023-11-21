@@ -1,5 +1,6 @@
 from pydantic import BaseModel, validator
 from nltk.corpus import stopwords
+from http import HTTPStatus
 
 class PredictContextPayload(BaseModel):
     target_word: str
@@ -60,3 +61,14 @@ class PredictImagesPayload(BaseModel):
 
         return context
 
+class PredictImageResponseData(BaseModel):
+    model_name: str
+    target_word: str
+    context: str
+    predicted_image_index: int
+    predicted_score: float
+
+class PredictImageResponseModel(BaseModel):
+    message: str = HTTPStatus.OK.phrase
+    status_code: int = HTTPStatus.OK.value
+    data: PredictImageResponseData

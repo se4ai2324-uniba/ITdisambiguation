@@ -6,7 +6,7 @@ from datetime import datetime
 from PIL import Image
 from conf import config
 from models.evaluate import predict_context, predict
-from api.schemas import PredictContextPayload, PredictImagesPayload
+from api.schemas import PredictContextPayload, PredictImagesPayload,PredictImageResponseModel,PredictImageResponseData
 from http import HTTPStatus
 from pydantic import ValidationError
 from fastapi import FastAPI, HTTPException, status, Request, File, UploadFile, Depends, Form
@@ -120,7 +120,8 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
 @app.post("/models/{model_name}/predict_images",
           tags=["predictions"],
           summary="Predict the most relevant image given a list of images, a context and a target word",
-          response_description="The index of the image and the scores")
+          response_description="The index of the image and the scores",
+          response_model=PredictImageResponseModel)
 async def _predict_images(request: Request, model_name: str, payload: PredictImagesPayload = Depends(checker_images), images: List[UploadFile] = File(...)):
     """
     Predict Images API for a specific model.
@@ -162,15 +163,14 @@ async def _predict_images(request: Request, model_name: str, payload: PredictIma
     scores = predict(model_dict[model_name], [word], [context], images_tensor)
     best_scores, best_indices = torch.max(scores, dim=1)
 
-    response = {
-        "message": HTTPStatus.OK.phrase,
-        "status-code": HTTPStatus.OK,
-        "data": {
-            "model_name": model_name,
-            "target_word": word,
-            "context": context,
-            "predicted_image_index": best_indices.tolist()[0],
-            "predicted_score": best_scores.tolist()[0]
-        }
-    }
-    return construct_response(request, response)
+    response = PredictImageResponseModel(
+        data=PredictImageResponseData(
+            model_name=model_name,
+            target_word=word,
+            context=context,
+            predicted_image_index=best_indices.tolist()[0],
+            predicted_score=best_scores.tolist()[0]
+        )
+    )
+
+    return response
