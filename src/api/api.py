@@ -57,19 +57,6 @@ def checker_images(target_word: str = Form(...), context: str = Form(...)):
             detail=jsonable_encoder(e.errors())
         )
 
-def construct_response(request: Request, response: dict):
-    final_response = {
-        "message": response["message"],
-        "method": request.method,
-        "status-code": response["status-code"],
-        "timestamp": datetime.now().isoformat(),
-        "url": request.url._url
-    }
-    if "data" in response:
-        final_response["data"] = response["data"]
-
-    return final_response
-
 def value_from_metric_content(metric_content: str):
     return float(re.search(r'\d+\.\d+', metric_content).group())
 

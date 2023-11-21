@@ -1,8 +1,6 @@
 import pytest
 from src.api.request import send_images_to_api
 
-
-
 def test_success():
     api_url = "http://localhost:8000/models/ViT-B-16/predict_images"
     image_urls = ["https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg", 

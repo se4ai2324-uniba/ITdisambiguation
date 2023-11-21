@@ -22,17 +22,18 @@ def download_image(image_url):
         return file_path
     return None
 
+def send_context_to_api(img_path, target_word, contexts):
+    api_url = "http://127.0.0.1:8000/models/RN50/predict_context"
+    #img = open("data/Test/resized_test_images_N/image.4457.jpg", "rb")
+    img = open(img_path, "rb")
 
-def send_context_api():
-    url = "http://127.0.0.1:8000/models/RN50/predict_context"
-    img = open("data/Test/resized_test_images_N/image.4457.jpg", "rb")
-    files = {"image": img}
-    data = {
-        "data": '{"target_word": "neptune", "contexts": "statue,planet"}'
-    }
-    res = requests.post(url, data=data, files=files)
-
-    print(res.json())
+    response = requests.post(
+        api_url,
+        files={"image": img},
+        data={"target_word": target_word, "contexts": contexts}
+    )
+    img.close()
+    return response
 
 def send_images_to_api(api_url, image_urls, target_word, context):
     """Scarica le immagini e le invia all'API."""
