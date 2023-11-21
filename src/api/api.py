@@ -7,7 +7,7 @@ from datetime import datetime
 from PIL import Image
 from conf import config
 from models.evaluate import predict_context, predict
-from api.schemas import PredictContextPayload, PredictImagesPayload,PredictImageResponseModel,PredictImageResponseData,GetModelInfosResponseModel,GetModelInfosData,ModelMetrics,GetModelNamesResponseModel,GetModelNamesData
+from api.schemas import *
 from http import HTTPStatus
 from pydantic import ValidationError
 from fastapi import FastAPI, HTTPException, status, Request, File, UploadFile, Depends, Form
@@ -146,7 +146,8 @@ def _get_model_infos(request: Request, model_name: str):
 @app.post("/models/{model_name}/predict_context",
           tags=["Predictions"],
           summary="Predict the most relevant context given a list of contexts, an image and a target word",
-          response_description="The most relevant context and its associated index")
+          response_description="The most relevant context and its associated index",
+          response_model=PredictContextResponseModel)
 def _predict_context(request: Request, model_name: str, payload: PredictContextPayload = Depends(checker_context), image: UploadFile = File(...)):
     """
     Predict Context API for a specific model.
@@ -175,20 +176,18 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
     scores = predict_context(model_dict[model_name], word, contexts, image)
     predicted_index = scores.argmax().item()
 
-    response = {
-        "message": HTTPStatus.OK.phrase,
-        "status-code": HTTPStatus.OK,
-        "data": {
-            "model_name": model_name,
-            "target_word": word,
-            "contexts": ", ".join(contexts),
-            "predicted_context": contexts[predicted_index],
-            "predicted_score": scores.squeeze()[predicted_index].item(),
-            "predicted_context_index": predicted_index
-        }
-    }
+    response = PredictContextResponseModel(
+        data=PredictContextResponseData(
+            model_name=model_name,
+            target_word=word,
+            contexts=", ".join(contexts),
+            predicted_context=contexts[predicted_index],
+            predicted_score=scores.squeeze()[predicted_index].item(),
+            predicted_context_index=predicted_index
+        )
+    )
 
-    return construct_response(request, response)
+    return response
 
 
 @app.post("/models/{model_name}/predict_images",

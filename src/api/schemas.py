@@ -62,6 +62,19 @@ class PredictImagesPayload(BaseModel):
 
         return context
 
+class PredictContextResponseData(BaseModel):
+    model_name: str
+    target_word: str
+    contexts: str
+    predicted_context: str
+    predicted_score: float
+    predicted_context_index: int
+
+class PredictContextResponseModel(BaseModel):
+    message: str = HTTPStatus.OK.phrase
+    status_code: int = HTTPStatus.OK.value
+    data: PredictContextResponseData
+
 class PredictImageResponseData(BaseModel):
     model_name: str
     target_word: str
