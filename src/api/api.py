@@ -3,12 +3,10 @@ sys.path.append("src")
 import re
 import torch
 import open_clip
-from datetime import datetime
 from PIL import Image
 from conf import config
 from models.evaluate import predict_context, predict
 from api.schemas import *
-from http import HTTPStatus
 from pydantic import ValidationError
 from fastapi import FastAPI, HTTPException, status, Request, File, UploadFile, Depends, Form
 from fastapi.encoders import jsonable_encoder
@@ -79,7 +77,7 @@ def _get_models(request: Request):
          response_model=GetModelInfosResponseModel)
 def _get_model_infos(request: Request, model_name: str):
     if model_name not in model_dict:
-        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Model not found")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
     
     model = model_dict[model_name]
     if model_name == "RN50":
@@ -202,10 +200,10 @@ async def _predict_images(request: Request, model_name: str, payload: PredictIma
     """
 
     if model_name not in model_dict:
-        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Model not found")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
     
     if len(images)>10 or len(images)<2:
-        raise HTTPException(status_code=HTTPStatus.UNPROCESSABLE_ENTITY, detail= "You should send a number of images between 1 and 10")
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail= "You should send a number of images between 1 and 10")
     
     word = payload.target_word
     context = payload.context
