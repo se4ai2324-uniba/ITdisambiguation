@@ -1,12 +1,13 @@
 import sys
 sys.path.append("src")
+import re
 import torch
 import open_clip
 from datetime import datetime
 from PIL import Image
 from conf import config
 from models.evaluate import predict_context, predict
-from api.schemas import PredictContextPayload, PredictImagesPayload,PredictImageResponseModel,PredictImageResponseData
+from api.schemas import PredictContextPayload, PredictImagesPayload,PredictImageResponseModel,PredictImageResponseData,GetModelInfosResponseModel,GetModelInfosData,ModelMetrics
 from http import HTTPStatus
 from pydantic import ValidationError
 from fastapi import FastAPI, HTTPException, status, Request, File, UploadFile, Depends, Form
@@ -69,8 +70,68 @@ def construct_response(request: Request, response: dict):
 
     return final_response
 
+def value_from_metric_content(metric_content: str):
+    return float(re.search(r'\d+\.\d+', metric_content).group())
+
+@app.get("/models/{model_name}",
+         tags=["Infos"],
+         summary="Gets all the infos about the given model",
+         response_model=GetModelInfosResponseModel)
+def _get_model_infos(request: Request, model_name: str):
+    if model_name not in model_dict:
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Model not found")
+    
+    model = model_dict[model_name]
+    if model_name == "RN50":
+        description = (
+            "This CLIP model uses ResNet-50 as the visual backbone and has undergone fine-tuning specifically for the Visual Word Sense "
+            "Disambiguation (VWSD) task. During fine-tuning, only certain parts of the model are trained to adapt the pre-trained CLIP to the "
+            "specific requirements of the task, leveraging the visual feature extraction capabilities of ResNet-50."
+        )
+        typical_usage = "Ideal when you want a CLIP model with a solid base like ResNet-50, tailored for a specific word disambiguation task based on images."
+
+        with open("metrics/mrr.metric", 'r') as file: 
+            mrr = value_from_metric_content(file.read())
+        with open("metrics/hits1.metric", 'r') as file: 
+            hits1 = value_from_metric_content(file.read())
+        with open("metrics/hits3.metric", 'r') as file: 
+            hits3 = value_from_metric_content(file.read())
+        metrics = ModelMetrics(
+                mrr = mrr,
+                hits1 = hits1,
+                hits3 = hits1,
+            )
+
+    elif model_name == "ViT-B-16":
+        description = (
+            "This CLIP configuration uses a Vision Transformer with a 16x16 patch size as the visual backbone. The model structure "
+            "harnesses the power of transformers for image processing. The model has been pre-trained and can be used for zero-shot "
+            "tasks or fine-tuning on specific tasks."
+        )
+        typical_usage = (
+            "Recommended when you want to benefit from the transformer architecture in visual processing. ViT-B-16 is lighter than larger models "
+            "but can still provide good performance in computer vision tasks and image-based word disambiguation."
+        )
+        metrics = ModelMetrics(
+                mrr = 0.810,
+                hits1 = 0.708,
+                hits3 = 0.894,
+            )
+
+    response = GetModelInfosResponseModel(
+        data = GetModelInfosData(
+            model_name=model_name,
+            n_parameters=sum(p.numel() for p in model.parameters()),
+            description=description,
+            typical_usage=typical_usage,
+            metrics = metrics
+        )
+    )
+
+    return response
+
 @app.post("/models/{model_name}/predict_context",
-          tags=["predictions"],
+          tags=["Predictions"],
           summary="Predict the most relevant context given a list of contexts, an image and a target word",
           response_description="The most relevant context and its associated index")
 def _predict_context(request: Request, model_name: str, payload: PredictContextPayload = Depends(checker_context), image: UploadFile = File(...)):
@@ -118,7 +179,7 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
 
 
 @app.post("/models/{model_name}/predict_images",
-          tags=["predictions"],
+          tags=["Predictions"],
           summary="Predict the most relevant image given a list of images, a context and a target word",
           response_description="The index of the image and the scores",
           response_model=PredictImageResponseModel)

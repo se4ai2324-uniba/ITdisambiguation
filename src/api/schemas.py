@@ -72,3 +72,20 @@ class PredictImageResponseModel(BaseModel):
     message: str = HTTPStatus.OK.phrase
     status_code: int = HTTPStatus.OK.value
     data: PredictImageResponseData
+
+class ModelMetrics(BaseModel):
+    mrr: float
+    hits1: float
+    hits3: float
+
+class GetModelInfosData(BaseModel):
+    model_name: str
+    n_parameters: int
+    description: str
+    typical_usage:str
+    metrics: ModelMetrics
+
+class GetModelInfosResponseModel(BaseModel):
+    message: str = HTTPStatus.OK.phrase
+    status_code: int = HTTPStatus.OK.value
+    data: GetModelInfosData
