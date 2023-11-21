@@ -22,10 +22,9 @@ def download_image(image_url):
         return file_path
     return None
 
-def send_context_to_api(img_path, target_word, contexts):
+def send_context_to_api(image_path, target_word, contexts):
     api_url = "http://127.0.0.1:8000/models/RN50/predict_context"
-    #img = open("data/Test/resized_test_images_N/image.4457.jpg", "rb")
-    img = open(img_path, "rb")
+    img = open(image_path, "rb")
 
     response = requests.post(
         api_url,
