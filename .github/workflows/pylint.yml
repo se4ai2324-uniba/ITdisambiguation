@@ -20,4 +20,5 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-          find src -type f -name "*.py" -exec pylint --disable=import-error,too-many-locals --output-format=text {} \; | tee ${{ github.workspace }}/reports/pylint_report.txt
+          mkdir -p pylint_reports
+          pylint --disable=import-error,too-many-locals --output-format=text src/*.py > pylint_reports/pylint_report.txt
