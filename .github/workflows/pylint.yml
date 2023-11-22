@@ -20,5 +20,9 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-          mkdir -p pylint_reports
-          find src -type f -name "*.py" -exec pylint --disable=import-error,too-many-locals --output-format=text {} \; | tee pylint_reports/pylint_report.txt
+          find src -type f -name "*.py" -exec pylint --disable=import-error,too-many-locals --output-format=text {} \; | tee pylint_report.txt
+    - name: Upload report
+      uses: actions/upload-artifact@v2
+      with:
+          name: pylint-report
+          path: pylint_report.txt
