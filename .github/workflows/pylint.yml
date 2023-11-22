@@ -20,4 +20,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        find src -type f -name "*.py" -exec pylint --output-format=text {} + > pylint_report.txt
+        find src -type f -name "*.py" -exec pylint --output-format=text {} +
