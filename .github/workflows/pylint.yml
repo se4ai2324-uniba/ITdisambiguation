@@ -21,4 +21,5 @@ jobs:
     - name: Analysing the code with pylint
       run: |
           mkdir -p pylint_reports
-          pylint --disable=import-error,too-many-locals --output-format=text src/*.py > pylint_reports/pylint_report.txt
+          find src -type f -name "*.py" -exec pylint --disable=import-error,too-many-locals --output-format=text {} \; | tee pylint_reports/pylint_report.txt
+          
