@@ -20,4 +20,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint -ry --disable import-error --disable too-many-locals $(git ls-files '*.py') > /home/runner/work/ITdisambiguation/reports/pylint_report.txt
+        pylint -ry --disable import-error --disable too-many-locals $(git ls-files '*.py')
