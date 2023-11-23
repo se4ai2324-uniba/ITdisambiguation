@@ -2,6 +2,10 @@
 
 This folder contains all tests needed for code, model and data. The folder is structured in the following way:
 
+- `api_testing` Check the correct behavior of the APIs:
+    1. Predict context api test
+    2. Predict image api test
+
 - `behavioral_testing` Check the correct behavior of the model, in particular:
     1. Directional testing
     2. Invariance testing

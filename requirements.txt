@@ -5,8 +5,6 @@
 click
 Sphinx
 coverage
-awscli
-flake8
 python-dotenv>=0.5.1
 
 # other requirements
@@ -19,14 +17,18 @@ nltk~=3.8.1
 Pillow~=10.1.0
 tqdm~=4.66.1
 setuptools~=65.5.0
+pytest
 
 # apis
 pydantic
 fastapi
 uvicorn
+python-multipart
+
 
 #test requirements
 deepchecks
 great-expectations
 pylint
 pytest
+flake8

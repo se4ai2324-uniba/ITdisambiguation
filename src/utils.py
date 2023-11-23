@@ -5,8 +5,6 @@ import torch
 from sentence_transformers import util
 from sentence_transformers import SentenceTransformer
 import nltk
-from nltk.tokenize import word_tokenize
-from nltk.stem import PorterStemmer
 from nltk.corpus import wordnet as wn
 from nltk.corpus import stopwords
 nltk.download('wordnet')

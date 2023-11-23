@@ -51,6 +51,17 @@ def predict(model_1, words, contexts, images_1):
                   imgs_emb.view(text_emb.size(0), n_images, -1))).softmax(-1)
     return scores_tot
 
+def predict_context(model_1, word, contexts, image):
+
+    """ Method used to predict the context given an image """
+
+    word_expanded = [word for _ in range(len(contexts))]
+    text = tokenizer([f"This is {c}, {exp}."
+                      for c, exp in zip(contexts, disambiguator(word_expanded, contexts))]).to(DEV)
+    text_emb = model_1.encode_text(text, normalize=True)
+    imgs_emb = model_1.encode_image(image.unsqueeze(0), normalize=True)
+    scores = (100 * torch.einsum("ij,kj->ik", imgs_emb, text_emb)).softmax(-1)
+    return scores
 
 if __name__ == '__main__':
     with torch.no_grad():
