@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
+import { useGetModels } from './services/ContentManager'
 import './App.css'
+import ModelContainer from './ModelContainer';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  
+  const {models} = useGetModels();
+  const [selectedModel, setSelectedModedl] = useState();
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+  useEffect(() => {
+    if(models.length !== 0) setSelectedModedl(models[0])
+  }, [models])
+
+  return <div className="page-container">
+    <div className="row">
+      
+      <div className="column" id="div1">
+        
+        {models.length === 0 ? 
+          "Loading..." :
+          <div>
+            {models.map((m,i) => 
+              <button key={i} type="button" onClick={() => setSelectedModedl(m)}>
+                {m}
+              </button>
+            )}
+          </div>
+        }
+
+        <ModelContainer modelName={selectedModel}/>
+
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+
+      <div className="column" id="div2">
+        Output content
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      
+    </div>
+    
+  </div>
 }
-
-export default App
