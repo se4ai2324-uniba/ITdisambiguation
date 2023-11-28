@@ -18,7 +18,7 @@ export default function ModelContainer({modelName}) {
         <strong>Typical usage:</strong> {modelInfo?.typical_usage}
       </div>
       <div className="info-row">
-        <strong>Parameters number:</strong> {modelInfo?.n_parameters}
+        <strong>Parameters number:</strong> {modelInfo?.n_parameters?.toLocaleString('it-IT')}
       </div>     
     </div>
 

@@ -25,6 +25,10 @@ export default function PredictContextInput({modelName}){
                 image: imageFile,
                 ...data.data
             }))
+            .catch((error) => setOutput({
+                ...error,
+                type: "error"
+            }))
     }
 
     // Event handler for file input change

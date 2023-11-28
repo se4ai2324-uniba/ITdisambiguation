@@ -15,7 +15,7 @@ export default function PredictImagesInput({modelName}){
         let bodyFormData = new FormData();
         bodyFormData.append('target_word', targetWord);
         bodyFormData.append('context', context);
-        imageFiles.map((file, index) => bodyFormData.append('images', file))
+        imageFiles?.map((file, index) => bodyFormData.append('images', file))
 
         setOutput("Loading...")
         post(`${MODELS}/${modelName}/${PREDICT_IMAGES}`, {body: bodyFormData})
@@ -23,6 +23,10 @@ export default function PredictImagesInput({modelName}){
                 type: ACTIONS.PREDICT_IMAGES,
                 images: imageFiles,
                 ...data.data
+            }))
+            .catch((error) => setOutput({
+                ...error,
+                type: "error",
             }))
     }
 

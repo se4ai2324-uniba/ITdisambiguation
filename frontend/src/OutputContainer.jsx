@@ -72,5 +72,16 @@ export default function OutputContainer() {
                 </strong>
             </div>  
         </div>
+    
+    console.log(output)
+    if(output.type === "error")
+        return <div className="info-container">
+            <div className="info-row">
+                <h2 style={{color: "red"}}><strong>Error {output.status}</strong></h2>
+            </div>
+            {output?.data?.detail?.map(e => <div className="info-row">
+                {e.msg} <strong>{e.loc[1]}</strong>
+            </div>)}
+        </div>
 
 }
