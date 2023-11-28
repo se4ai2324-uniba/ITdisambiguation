@@ -15,10 +15,8 @@ export default function PredictContextInput({modelName}){
         bodyFormData.append('image', imageFile);
 
         post(`${MODELS}/${modelName}/${PREDICT_CONTEXT}`, {body: bodyFormData})
-            .then(r => console.log(r))
+            .then(({data}) => console.log(data.data))
     }
-
-    console.log(imageFile)
 
     // Event handler for file input change
     const handleImageChange = (event) => {

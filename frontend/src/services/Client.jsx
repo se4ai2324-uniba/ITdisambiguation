@@ -3,6 +3,7 @@ import axios from 'redaxios';
 
 export const MODELS = "models"
 export const PREDICT_CONTEXT = "predict_context"
+export const PREDICT_IMAGES = "predict_images"
 
 export function get(url, config = {elem: "", params: {}, header: {}}) {
 	return axios.get(getUrl(url, config.elem), getConfig(config)).then(({data}) => data.data);
