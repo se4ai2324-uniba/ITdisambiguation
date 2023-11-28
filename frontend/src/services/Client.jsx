@@ -31,7 +31,6 @@ export function getErrorMessage(e) {
 	else if (e.data) error = e.data.message || e.data.error;
 	else error = e.message || e.error;
 
-	console.log(error);
 	return error;
 }
 

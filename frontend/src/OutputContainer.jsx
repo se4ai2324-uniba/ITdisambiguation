@@ -73,7 +73,6 @@ export default function OutputContainer() {
             </div>  
         </div>
     
-    console.log(output)
     if(output.type === "error")
         return <div className="info-container">
             <div className="info-row">
