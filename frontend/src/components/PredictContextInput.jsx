@@ -1,8 +1,12 @@
+import React from 'react'
 import { useState } from 'react'
 import { post, MODELS, PREDICT_CONTEXT } from '../services/Client';
+import { PredictContext } from '../services/PredictionContextProvider';
+import ACTIONS from '../constants/actions';
 
 export default function PredictContextInput({modelName}){
 
+    const { setOutput } = React.useContext(PredictContext);
     const [targetWord, setTargetWord] = useState('');
     const [contexts, setContexts] = useState('');
     const [imageFile, setImageFile] = useState(null);
@@ -14,8 +18,13 @@ export default function PredictContextInput({modelName}){
         bodyFormData.append('contexts', contexts);
         bodyFormData.append('image', imageFile);
 
+        setOutput("Loading...")
         post(`${MODELS}/${modelName}/${PREDICT_CONTEXT}`, {body: bodyFormData})
-            .then(({data}) => console.log(data.data))
+            .then(({data}) => setOutput({
+                type: ACTIONS.PREDICT_CONTEXT,
+                image: imageFile,
+                ...data.data
+            }))
     }
 
     // Event handler for file input change

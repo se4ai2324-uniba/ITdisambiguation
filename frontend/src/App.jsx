@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useGetModels } from './services/ContentManager'
+import OutputContainer from './OutputContainer';
 import './App.css'
 import ModelContainer from './ModelContainer';
 import 'bootstrap'
@@ -63,6 +64,8 @@ export default function App() {
           <div className="card-body">
             <h5 className="card-title">Output</h5>
             <p className="card-text">Spiegazione rispota in base all'action selezionata?</p>
+
+            <OutputContainer/>
           </div>
         </div>
       </div>
