@@ -1,13 +1,12 @@
-import { useState } from 'react'
 import { useGetModelInfos } from './services/ContentManager'
 import './ModelContainer.css'
 import ACTIONS from './constants/actions';
 import PredictImagesInput from './components/PredictImagesInput';
 import PredictContextInput from './components/PredictContextInput';
 
+
 export default function ModelContainer({modelName}) {
 
-  const [selectedAction, setSelectedAction] = useState(ACTIONS.PREDICT_IMAGES);
   const {modelInfo} = useGetModelInfos(modelName);
 
   return <div>
@@ -23,18 +22,41 @@ export default function ModelContainer({modelName}) {
       </div>     
     </div>
 
-    <div>
-      <button key="predict_images" className='button' type="button" onClick={() => setSelectedAction(ACTIONS.PREDICT_IMAGES)}>
-        {ACTIONS.PREDICT_IMAGES}
-      </button>
-      <button key="predict_context" className='button' type="button" onClick={() => setSelectedAction(ACTIONS.PREDICT_CONTEXT)}>
-        {ACTIONS.PREDICT_CONTEXT}
-      </button>
+
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button 
+        class="nav-link active" 
+        id="pills-predict-images-tab" 
+        data-bs-toggle="pill" 
+        data-bs-target="#pills-predict-images" 
+        type="button" 
+        role="tab" 
+        aria-controls="pills-predict-images" 
+        aria-selected="true">
+          
+          {ACTIONS.PREDICT_IMAGES}
+        
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button 
+        class="nav-link" 
+        id="pills-predict-context-tab" 
+        data-bs-toggle="pill" 
+        data-bs-target="#pills-predict-context" 
+        type="button" 
+        role="tab" 
+        aria-controls="pills-predict-context" 
+        aria-selected="false">
+          {ACTIONS.PREDICT_CONTEXT}
+          </button>
+      </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="pills-predict-images" role="tabpanel" aria-labelledby="pills-predict-images-tab" tabindex="0"><PredictImagesInput modelName={modelName}/></div>
+      <div class="tab-pane fade" id="pills-predict-context" role="tabpanel" aria-labelledby="pills-predict-context-tab" tabindex="0"><PredictContextInput modelName={modelName}/></div>
     </div>
 
-    <div className='input_prediction_container'>
-      {selectedAction === ACTIONS.PREDICT_IMAGES && <PredictImagesInput modelName={modelName}/>}
-    {selectedAction === ACTIONS.PREDICT_CONTEXT && <PredictContextInput modelName={modelName}/>}
-    </div>
   </div>
 }

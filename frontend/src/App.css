@@ -1,15 +1,4 @@
-.page-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+.shadow {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
-  
-.row {
-    flex: 1;
-    display: flex;
-}
-  
-.column {
-    flex: 1;
-    padding: 20px;
-    border: 1px solid #ccc;}
+

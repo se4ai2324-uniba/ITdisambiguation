@@ -41,32 +41,47 @@ export default function PredictContextInput({modelName}){
 
     return <div>
         <p>
-            <label htmlFor="simpleInput">Target Word: </label>
-            <input
-                type="text"
-                id="target-word"
-                value={targetWord}
-                onChange={(event) => setTargetWord(event.target.value)}
-            />
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="target-addon">Target Word</span>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Aquila" 
+                    aria-describedby="target-addon"
+                    id="target-word"
+                    value={targetWord}
+                    onChange={(event) => setTargetWord(event.target.value)}
+                    />
+            </div>
+
         </p>
         <p>
-            <label htmlFor="simpleInput">Contexts divided by commas: </label>
-            <input
-                type="text"
-                id="contexts"
-                value={contexts}
-                onChange={(event) => setContexts(event.target.value)}
-            /> 
+            <div class="input-group mb-3">
+            <span class="input-group-text" id="context-addon">Contexts (divided by commas) </span>
+                <input
+                    type="text" 
+                    class="form-control" 
+                    placeholder="bird, constellation stars" 
+                    aria-describedby="context-addon"
+                    id="contexts"
+                    value={contexts}
+                    onChange={(event) => setContexts(event.target.value)}
+                /> 
+            </div>
         </p>
 
         <p>
-            <label htmlFor="imageInput">Select Image: </label>
-            <input
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="imageInput">Target Image</label>
+                <input
                 type="file"
+                class="form-control"
                 id="imageInput"
                 accept="image/*"
                 onChange={handleImageChange}
-            />
+                />
+            </div>
+
             {imageFile && (
                 <div>
                 <p>Selected Image:</p>
@@ -80,8 +95,8 @@ export default function PredictContextInput({modelName}){
             )}
         </p>
 
-        <p>
-            <button key="send-predict-context" type="button" onClick={predictContext}>Send</button>
-        </p>
+        <div class="d-grid gap-2">
+            <button class="btn btn-outline-success" key="send-predict-context" type="button" onClick={predictContext}>Send</button>
+        </div>
     </div>
 }
