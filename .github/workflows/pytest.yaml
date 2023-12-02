@@ -1,13 +1,14 @@
 name: Pytest
 
 on:
-  workflow_dispatch:
   push:
-    paths:
-      - 'src/**'
-      - '!src/api/**'
-      - 'tests/**'
-      - '!tests/api_testing/**'
+    branches:
+      - pytest_action
+    # paths:
+    #   - 'src/**'
+    #   - '!src/api/**'
+    #   - 'tests/**'
+    #   - '!tests/api_testing/**'
 
 jobs:
   build:
