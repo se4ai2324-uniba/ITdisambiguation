@@ -29,7 +29,6 @@ def test_minimum_functionality():
 
     remove(img1)
     remove(img2)
-    print(images.shape)
 
     words = ['mouse', 'computer']
     contexts = ['mouse animal', 'computer device']

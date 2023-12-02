@@ -1,31 +1,43 @@
 import pytest
 import torch
 import open_clip
+from PIL import Image
+from urllib import request
+from os import remove
 from src.models.evaluate import predict
-from src.utils import VWSDDataset
 from src.conf import config
 dev = 'cuda' if torch.cuda.is_available() else 'cpu'
+img1 = 'neptune_statue.jpg'
+img2 = 'neptune_planet.jpg'
 
 def test_directional():
     # Changing the context word should change model's output
-    model, _, _ = open_clip.create_model_and_transforms('RN50', 'openai', device=dev)
+    model, _, preproc = open_clip.create_model_and_transforms('RN50', 'openai', device=dev)
     model.load_state_dict(torch.load(config['MODEL_FILE'], map_location=dev))
-    data = VWSDDataset(config['TEST_IMAGES_PATH'], config['TEST_DATA'], config['TEST_TARGET_IMAGES'], device=dev)
 
     # Data entry relative to the word 'neptune'
-    _, _, images, _ = data[5]
+    request.urlretrieve('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Trento-statue_on_top_of_the_fountain_of_Neptune-side.jpg/675px-Trento-statue_on_top_of_the_fountain_of_Neptune-side.jpg', img1)
+    request.urlretrieve('https://upload.wikimedia.org/wikipedia/commons/0/06/Neptune.jpg', img2)
+
+    image1 = preproc(Image.open(img1))
+    image2 = preproc(Image.open(img2))
+    images_all = torch.stack([image1, image2])
+    images = torch.stack([images_all, images_all])
+
+    remove(img1)
+    remove(img2)
+
     # Same word
     words = ['neptune', 'neptune']
     # Different contexts
     contexts = ['neptune statue', 'neptune planet']
-    images = images.unsqueeze(0).repeat(2,1,1,1,1)
 
     predicted_scores = predict(model, words, contexts, images)
     predicted_images = predicted_scores.argmax(dim=1).tolist()
 
     # Different prediction outcomes
-    assert predicted_images[0] == 6
-    assert predicted_images[1] == 5
+    assert predicted_images[0] == 0
+    assert predicted_images[1] == 1
 
 if __name__ == '__main__':
     pytest.main()
