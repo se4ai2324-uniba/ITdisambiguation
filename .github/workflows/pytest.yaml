@@ -26,19 +26,36 @@ jobs:
       - name: DVC setup
         uses: iterative/setup-dvc@v1
 
-      # - name: Install requirements
-      #   run: |
-      #     sudo apt-get install -y curl
-      #     python -m pip install --upgrade pip
-      #     pip install -r requirements.txt
+      - name: Install requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Prepare data for tests
+      - name: Prepare data and model
         env:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run: |
           dvc pull data/Train
+          dvc pull models/model.pt
           dvc repro preprocess_train
           ls data/
+          ls models/
+
+      # - name: Test dataset
+      #   run: |
+      #     python -m pytest tests/dataset_testing/
+
+      # - name: Test preprocessing functions
+      #   run: |
+      #     python -m pytest tests/preprocessing_testing/
+
+      # - name: Test model behavior
+      #   run: |
+      #     python -m pytest --disable-warnings tests/behavioral_testing/
+
+      # - name: Test model training
+      #   run: |
+      #     python -m pytest --disable-warnings tests/model_testing/
 
       # - name: Download data and model checkpoint
       #   run: |
