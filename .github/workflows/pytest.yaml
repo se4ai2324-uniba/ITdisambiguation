@@ -36,6 +36,7 @@ jobs:
         env:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run: |
+          dvc pull data/Train
           dvc repro preprocess_train
           ls data/
 
