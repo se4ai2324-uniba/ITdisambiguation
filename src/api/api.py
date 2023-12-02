@@ -9,6 +9,7 @@ from models.evaluate import predict_context, predict
 from api.schemas import *
 from pydantic import ValidationError
 from fastapi import FastAPI, HTTPException, status, Request, File, UploadFile, Depends, Form
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 from typing import List
 from io import BytesIO
@@ -23,6 +24,20 @@ preproc = open_clip.image_transform(224, False)
 app = FastAPI(
     title="Image Text disambiguation APIs",
     version="1.0"
+)
+
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5173/"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.on_event("startup")
