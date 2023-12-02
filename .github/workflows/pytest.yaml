@@ -23,22 +23,24 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install requirements
-        run: |
-          # sudo apt-get install -y curl unzip
-          # python -m pip install --upgrade pip
-          # pip install -r requirements.txt
-          # pip install gdown
-          pip install dvc dvc-gdrive
+      - name: DVC setup
+        uses: iterative/setup-dvc@v1
 
-      - name: Download data using dvc
+      # - name: Install requirements
+      #   run: |
+      #     sudo apt-get install -y curl
+      #     python -m pip install --upgrade pip
+      #     pip install -r requirements.txt
+
+      - name: Prepare data for tests
         env:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run: |
-          dvc pull
+          dvc repro preprocess_train
           ls data/
 
       # - name: Download data and model checkpoint
+      #   run: |
       #     curl 'https://dagshub.com/se4ai2324-uniba/ITdisambiguation.mlflow/get-artifact?path=model.pt&run_uuid=dd8df0bdfc4c48aeab59131acc17064b' -o models/model.pt
       #     gdown 1XzDYAn-2nyG111f1Wrx50yg2Txwo1vr4
-      #     unzip dataset.zip -d data/
+      #     unzip -q dataset.zip -d data/
