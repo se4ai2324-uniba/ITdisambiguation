@@ -27,7 +27,7 @@ jobs:
           # python -m pip install --upgrade pip
           # pip install -r requirements.txt
           # pip install gdown
-          pip install dvc
+          pip install dvc dvc-gdrive
 
       - name: Download data using dvc
         env:
