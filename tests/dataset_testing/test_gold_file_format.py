@@ -3,7 +3,7 @@ import torch
 import os
 from src.conf import config
 
-images_path = config["TRAIN_ORIGINAL_IMAGE_PATH"]
+images_path = config["TRAIN_IMAGES_PATH"]
 def test_gold_file_format():
     files = os.listdir(images_path)
 
