@@ -4,11 +4,10 @@ on:
   push:
     branches:
       - pytest_action
-    # paths:
-    #   - 'src/**'
-    #   - '!src/api/**'
-    #   - 'tests/**'
-    #   - '!tests/api_testing/**'
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '!tests/model_testing/**'
 
 jobs:
   build:
@@ -45,7 +44,7 @@ jobs:
 
       - name: Test preprocessing functions
         run: |
-          python -m pytest tests/preprocessing_testing/
+          python -m pytest --disable-warnings tests/preprocessing_testing/
 
       - name: Test model behavior
         run: |
