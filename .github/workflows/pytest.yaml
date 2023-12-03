@@ -38,27 +38,23 @@ jobs:
           dvc pull data/Train
           dvc pull models/model.pt
           dvc repro preprocess_train
-          ls data/
-          ls models/
 
-      # - name: Test dataset
-      #   run: |
-      #     python -m pytest tests/dataset_testing/
+      - name: Test dataset
+        run: |
+          python -m pytest tests/dataset_testing/
 
-      # - name: Test preprocessing functions
-      #   run: |
-      #     python -m pytest tests/preprocessing_testing/
+      - name: Test preprocessing functions
+        run: |
+          python -m pytest tests/preprocessing_testing/
 
-      # - name: Test model behavior
-      #   run: |
-      #     python -m pytest --disable-warnings tests/behavioral_testing/
+      - name: Test model behavior
+        run: |
+          python -m pytest --disable-warnings tests/behavioral_testing/
+
+      - name: Test APIs
+        run: |
+          python -m pytest --disable-warnings tests/api_testing/
 
       # - name: Test model training
       #   run: |
       #     python -m pytest --disable-warnings tests/model_testing/
-
-      # - name: Download data and model checkpoint
-      #   run: |
-      #     curl 'https://dagshub.com/se4ai2324-uniba/ITdisambiguation.mlflow/get-artifact?path=model.pt&run_uuid=dd8df0bdfc4c48aeab59131acc17064b' -o models/model.pt
-      #     gdown 1XzDYAn-2nyG111f1Wrx50yg2Txwo1vr4
-      #     unzip -q dataset.zip -d data/
