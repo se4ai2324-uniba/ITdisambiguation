@@ -15,7 +15,7 @@ def test_directional():
     model, _, preproc = open_clip.create_model_and_transforms('RN50', 'openai', device=dev)
     model.load_state_dict(torch.load(config['MODEL_FILE'], map_location=dev))
 
-    # Data entry relative to the word 'neptune'
+    # Download images
     request.urlretrieve('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Trento-statue_on_top_of_the_fountain_of_Neptune-side.jpg/675px-Trento-statue_on_top_of_the_fountain_of_Neptune-side.jpg', img1)
     request.urlretrieve('https://upload.wikimedia.org/wikipedia/commons/0/06/Neptune.jpg', img2)
 

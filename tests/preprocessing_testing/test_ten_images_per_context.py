@@ -2,8 +2,8 @@ import pytest
 import torch
 from torch.utils.data import DataLoader
 
-from src.models.conf import config
-from src.models.utils import VWSDDataset
+from src.conf import config
+from src.utils import VWSDDataset
 
 images_path = config['TRAIN_IMAGES_PATH']
 train_data = config['TRAIN_DATA']
