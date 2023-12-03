@@ -44,7 +44,7 @@ export default function App() {
               </div> :
               <div>
                 {models.map((m,i) => 
-                  <button className="btn btn-info" key={i} type="button" onClick={() => setSelectedModedl(m)}>
+                  <button className="btn btn-outline-secondary mx-2" key={i} type="button" onClick={() => setSelectedModedl(m)}>
                     {m}
                   </button>
                 )}
