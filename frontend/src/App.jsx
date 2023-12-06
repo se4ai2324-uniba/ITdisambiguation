@@ -36,7 +36,7 @@ export default function App() {
         <div className="card shadow">
           <div className="card-body">
             <h5 className="card-title">Input</h5>
-            <p className="card-text">Spiegazione su come utilizzare la web app?</p>
+           
 
             {models.length === 0 ? 
               <div className="spinner-border" role="status">
@@ -63,8 +63,7 @@ export default function App() {
         <div className="card shadow" id="div2">
           <div className="card-body">
             <h5 className="card-title">Output</h5>
-            <p className="card-text">Spiegazione rispota in base all'action selezionata?</p>
-
+            
             <OutputContainer/>
           </div>
         </div>
