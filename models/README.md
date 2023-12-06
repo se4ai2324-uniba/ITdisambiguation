@@ -128,23 +128,23 @@ Another limitation is that we use WordNet as the ontology, that's not the most c
 ## Energy consumption
 In the training phase of the model, it has been tracked the enviromental impact, using Code Carbon, a Python package that enables to track emissions in order to estimate the carbon footprint of an experiment.
 
-The result of the training phase are reported into the [$emissions.csv$](../reports/emissions.csv) file, including metrics like: 
-▪ Duration of the compute (in seconds) 
-▪ Emissions as CO2-equivalents(in kg) 
-▪ Energy consumed (in kWh)
+The result of the training phase are reported into the [emissions.csv](../reports/emissions.csv) file, including metrics like: 
+- Duration of the compute (in seconds) 
+- Emissions as CO2-equivalents(in kg) 
+- Energy consumed (in kWh)
 
 
 The model was trained using a shortened dataset and training duration.
 In order to provide a scaled version of the carbon emissions and energy consumption metrics, related to the training of the model with the full size dataset,
 the values obtained have been multiplied by the scaling factor of the original dataset.
 
-**co2_eq_emissions**: 
-	**emissions**: 0.001477 ([CO₂eq], in kg)
-	**source**: "Code carbon" 
-	**training_type**: "pre-training" 
-	**geographical_location**: "Quebec, Canada" 
-	**hardware_used**: 
-		**cpu_model**: "Intel(R) Xeon(R) CPU @ 2.20GHz"
-		**cpu_count**: 2
-		**gpu_model**: "Tesla T4"
-		**gpu_count**: 1
+- **co2_eq_emissions**: 
+	- **emissions**: 0.001477 ([CO₂eq], in kg)
+	- **source**: "Code carbon" 
+	- **training_type**: "pre-training" 
+	- **geographical_location**: "Quebec, Canada" 
+	- **hardware_used**: 
+		- **cpu_model**: "Intel(R) Xeon(R) CPU @ 2.20GHz"
+		- **cpu_count**: 2
+		- **gpu_model**: "Tesla T4"
+		- **gpu_count**: 1
