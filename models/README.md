@@ -151,7 +151,5 @@ the values obtained have been multiplied by the scaling factor of the original d
 
 
 
-<p align="center">
   <img src="energy_label.jpg" width="300px"/>
-</p> 
 
