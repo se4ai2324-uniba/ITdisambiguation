@@ -138,18 +138,19 @@ The model was trained using a shortened dataset and training duration.
 In order to provide a scaled version of the carbon emissions and energy consumption metrics, related to the training of the model with the full size dataset,
 the values obtained have been multiplied by the scaling factor of the original dataset.
 
-**co2_eq_emissions**: 
-	**emissions**: 0.001477 ([CO₂eq], in kg)
-	**source**: "Code carbon" 
-	**training_type**: "pre-training" 
-	**geographical_location**: "Quebec, Canada" 
-	**hardware_used**: 
-		**cpu_model**: "Intel(R) Xeon(R) CPU @ 2.20GHz"
-		**cpu_count**: 2
-		**gpu_model**: "Tesla T4"
-		**gpu_count**: 1
+```bibtex
+co2_eq_emissions: 
+	emissions: 0.001477 ([CO₂eq], in kg)
+	source: "Code carbon" 
+	training_type: "pre-training" 
+	geographical_location: "Quebec, Canada" 
+	hardware_used: 
+		cpu_model: "Intel(R) Xeon(R) CPU @ 2.20GHz"
+		cpu_count: 2
+		gpu_model: "Tesla T4"
+		gpu_count: 1
+```
 
-
-
+<p align="center">
   <img src="energy_label.jpg" width="300px"/>
-
+</p>
