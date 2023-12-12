@@ -149,6 +149,8 @@ the values obtained have been multiplied by the scaling factor of the original d
 		**gpu_model**: "Tesla T4"
 		**gpu_count**: 1
 
+
+
 <p align="center">
   <img src="energy_label.jpg" width="300px"/>
 </p> 
