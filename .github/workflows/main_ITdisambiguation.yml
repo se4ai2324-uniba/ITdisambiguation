@@ -26,6 +26,14 @@ jobs:
         username: ${{ secrets.AzureAppService_ContainerUsername_56a097857ddb45fe8e6b314790a2e992 }}
         password: ${{ secrets.AzureAppService_ContainerPassword_8e4122ab83264736b56be61c47bf80d4 }}
 
+    - name: Python setup
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: DVC setup
+      uses: iterative/setup-dvc@v1
+        
     - name: Prepare data and model
       env:
         GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
