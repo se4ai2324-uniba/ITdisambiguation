@@ -40,7 +40,6 @@ jobs:
       run: |
         dvc pull data/Train
         dvc pull models/model.pt
-        dvc repro preprocess_train
   
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
