@@ -37,9 +37,7 @@ jobs:
     - name: Prepare data and model
       env:
         GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
-      run: |
-        dvc pull data/Train
-        dvc pull models/model.pt
+      run: dvc pull models/model.pt
   
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
