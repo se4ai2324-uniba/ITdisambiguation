@@ -26,6 +26,14 @@ jobs:
         username: ${{ secrets.AzureAppService_ContainerUsername_56a097857ddb45fe8e6b314790a2e992 }}
         password: ${{ secrets.AzureAppService_ContainerPassword_8e4122ab83264736b56be61c47bf80d4 }}
 
+    - name: Prepare data and model
+      env:
+        GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+      run: |
+        dvc pull data/Train
+        dvc pull models/model.pt
+        dvc repro preprocess_train
+  
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
