@@ -38,14 +38,13 @@ jobs:
       env:
         GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
       run: dvc pull models/model.pt
-  
-    - name: Build and push container image to registry
-      uses: docker/build-push-action@v3
-      with:
-        push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_56a097857ddb45fe8e6b314790a2e992 }}/itdisambiguation:${{ github.sha }}
-        file: ./src/Dockerfile
 
+    - name: Build the Docker image # push The image to the docker hub
+      run: docker build . --file ./src/Dockerfile --tag index.docker.io/${{ secrets.AzureAppService_ContainerUsername_56a097857ddb45fe8e6b314790a2e992 }}/itdisambiguation:${{ github.sha }}
+    
+    - name: Docker Push
+      run: docker push index.docker.io/${{ secrets.AzureAppService_ContainerUsername_56a097857ddb45fe8e6b314790a2e992 }}/itdisambiguation:${{ github.sha }}
+      
   deploy:
     runs-on: ubuntu-latest
     needs: build
