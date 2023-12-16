@@ -1,81 +1,88 @@
 import pytest
-from src.api.request import send_images_to_api
+from io import BytesIO
+from urllib.request import urlopen
+from src.api.api import app
+from fastapi import status
+from fastapi.testclient import TestClient
+
+# Workaround to trigger startup event
+with TestClient(app) as client:
+    pass
+
+def send_images_to_api(client, image_urls, target_word, context):
+    """Scarica le immagini e le invia all'API."""
+    files = []
+    for url in image_urls:
+        res = urlopen(url)
+        files.append(('images', BytesIO(res.read())))
+
+    # Send images to API
+    response = client.post(
+        "models/RN50/predict_images",
+        files=files,
+        data={'target_word': target_word, 'context': context}
+    )
+
+    for _, file in files:
+        file.close()
+    
+    return response
 
 def test_success():
-    api_url = "http://localhost:8000/models/RN50/predict_images"
     image_urls = ["https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg", 
                 "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg"]
     target_word = "mouse"
     context = "pc"
 
-    # Invia la richiesta all'API
-    response = send_images_to_api(api_url, image_urls, target_word, context)
+    # Send request to API
+    response = send_images_to_api(client, image_urls, target_word, context)
 
-    # Controlla lo status code
-    assert response.status_code == 200, "Wrong status code"
+    # Check status code
+    assert response.status_code == status.HTTP_200_OK, "Wrong status code"
 
-def test_empty_context():
-    api_url = "http://localhost:8000/models/RN50/predict_images"
+@pytest.mark.parametrize(
+    "target_word, context",
+    [
+        ("mouse", ""),              # Empty context
+        ("", "pc"),                 # Empty target word
+        ("mouse", "pc computer")    # Malformed context
+    ]
+)
+def test_failure(target_word, context):
     image_urls = ["https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg", 
                 "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg"]
     target_word = "mouse"
     context = ""
 
-    response = send_images_to_api(api_url, image_urls, target_word, context)
+    response = send_images_to_api(client, image_urls, target_word, context)
 
-    assert response.status_code == 422, "Wrong status code"
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY, "Wrong status code"
 
-def test_empty_target_word():
-    api_url = "http://localhost:8000/models/RN50/predict_images"
-    image_urls = ["https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg", 
-                "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg"]
-    target_word = ""
-    context = "pc"
-
-    response = send_images_to_api(api_url, image_urls, target_word, context)
-    assert response.status_code == 422, "Wrong status code"
-    
-
-def test_malformed_context():
-    api_url = "http://localhost:8000/models/RN50/predict_images"
-    image_urls = ["https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg", 
-                "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg"]
+@pytest.mark.parametrize(
+    "image_urls",
+    [
+        # More then ten images
+        ["https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg",
+         "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg",
+         "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg",
+         "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg",
+         "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg",
+         "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg",
+         "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg",
+         "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg",
+         "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg",
+         "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg"],
+        # Less then two images
+        ["https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg"]
+    ]
+)
+def test_failure_images(image_urls):
     target_word = "mouse"
     context = "pc computer"
 
-    response = send_images_to_api(api_url, image_urls, target_word, context)
-    assert response.status_code == 422, "Wrong status code"
+    response = send_images_to_api(client, image_urls, target_word, context)
 
-def test_more_than_10_images():
-    api_url = "http://localhost:8000/models/RN50/predict_images"
-    image_urls = [
-                "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg", 
-                "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg",
-                "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg", 
-                "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg",
-                "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg", 
-                "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg",
-                "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg", 
-                "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg",
-                "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg", 
-                "https://gdsit.cdn-immedia.net/2016/11/TOPOLINO-970x485.jpg",                
-                ]
-    target_word = "mouse"
-    context = "pc computer"
-
-    response = send_images_to_api(api_url, image_urls, target_word, context)
-    assert response.status_code ==422, "Wrong status code"
-
-def test_less_than_2_images():
-    api_url = "http://localhost:8000/models/RN50/predict_images"
-    image_urls = [
-                "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg"              
-                ]
-    target_word = "mouse"
-    context = "pc computer"
-
-    response = send_images_to_api(api_url, image_urls, target_word, context)
-    assert response.status_code ==422, "Wrong status code"
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY, "Wrong status code"
 
 if __name__ == '__main__':
     pytest.main()

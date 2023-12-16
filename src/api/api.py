@@ -11,20 +11,9 @@ from pydantic import ValidationError
 from fastapi import FastAPI, HTTPException, status, Request, File, UploadFile, Depends, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
+from contextlib import asynccontextmanager
 from typing import List
 from io import BytesIO
-
-dev = "cuda" if torch.cuda.is_available() else "cpu"
-__pretrain_models = {"RN50": "openai",
-                     "ViT-B-16": "laion2b_s34b_b88k"}
-
-model_dict = {}
-preproc = open_clip.image_transform(224, False)
-
-app = FastAPI(
-    title="Image Text disambiguation APIs",
-    version="1.0"
-)
 
 origins = [
     "http://localhost:5173",
@@ -32,16 +21,15 @@ origins = [
     "http://127.0.0.1:5173/"
 ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+model_dict = {}
 
-@app.on_event("startup")
-def _load_models_and_transformation():
+@asynccontextmanager
+#def _load_models_and_transformation():
+async def lifespan(app: FastAPI):
+    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    __pretrain_models = {"RN50": "openai",
+                         "ViT-B-16": "laion2b_s34b_b88k"}
+    app.state.preproc = open_clip.image_transform(224, False)
     # Load models
     for model_name in __pretrain_models:
         model = open_clip.create_model(model_name,
@@ -51,6 +39,21 @@ def _load_models_and_transformation():
             model.load_state_dict(torch.load(config["MODEL_FILE"],
                                              map_location=dev))
         model_dict[model_name] = model
+    yield
+
+app = FastAPI(
+    title="Image Text disambiguation APIs",
+    version="1.0",
+    lifespan=lifespan
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def checker_context(target_word: str = Form(...), contexts: str = Form(...)):
     try:
@@ -171,7 +174,7 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
 
     word = payload.target_word
     contexts = payload.contexts
-    image = preproc(Image.open(image.file))
+    image = app.state.preproc(Image.open(image.file))
 
     scores = predict_context(model_dict[model_name], word, contexts, image)
     predicted_index = scores.argmax().item()
@@ -228,7 +231,7 @@ async def _predict_images(request: Request, model_name: str, payload: PredictIma
 
         image_content = await image_file.read()
         image_pil = Image.open(BytesIO(image_content))
-        processed_image = preproc(image_pil)
+        processed_image = app.state.preproc(image_pil)
 
         processed_images.append(processed_image)
 

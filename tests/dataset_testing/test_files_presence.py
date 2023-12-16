@@ -4,7 +4,7 @@ import os
 from src.conf import config
 
 train_images_names = config["TRAIN_DATA"] 
-images_path = config["TRAIN_ORIGINAL_IMAGE_PATH"]
+images_path = config["TRAIN_IMAGES_PATH"]
 
 def test_files_presence():
     with open(train_images_names, 'r') as f:
