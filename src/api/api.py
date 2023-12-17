@@ -15,6 +15,16 @@ from contextlib import asynccontextmanager
 from typing import List
 from io import BytesIO
 
+from prometheus_client import start_http_server, Summary, Histogram, Gauge, Counter
+import time
+
+# Inizializza le metriche Prometheus
+REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request', ['method', 'endpoint'])
+REQUEST_LATENCY = Histogram('request_latency_seconds', 'Latency of requests', ['method', 'endpoint'])
+IN_PROGRESS_REQUESTS = Gauge('in_progress_requests', 'In progress requests', ['method', 'endpoint'])
+REQUESTS = Counter('requests_total', 'Total Request Count', ['method', 'endpoint', 'http_status'])
+ERRORS = Counter('errors_total', 'Total Error Count', ['method', 'endpoint', 'error_type'])
+
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
@@ -55,6 +65,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Avvia il server Prometheus su una porta libera (ad esempio, 8001)
+start_http_server(8001)
+
 def checker_context(target_word: str = Form(...), contexts: str = Form(...)):
     try:
         return PredictContextPayload(target_word=target_word, contexts=contexts)
@@ -81,70 +94,93 @@ def value_from_metric_content(metric_content: str):
          summary="Gets a list of all the available models",
          response_model=GetModelNamesResponseModel)
 def _get_models(request: Request):
-    model_names = list(model_dict.keys())
-    response = GetModelNamesResponseModel(
-        data = GetModelNamesData(
-            model_names = model_names
-        )
-    )
-    return response
+    method, endpoint = 'GET', '/models'
+    with REQUEST_TIME.labels(method, endpoint).time():
+        with REQUEST_LATENCY.labels(method, endpoint).time():
+            IN_PROGRESS_REQUESTS.labels(method, endpoint).inc()
+            try:
+                model_names = list(model_dict.keys())
+                response = GetModelNamesResponseModel(
+                    data=GetModelNamesData(
+                        model_names=model_names
+                    )
+                )
+                REQUESTS.labels(method, endpoint, '200').inc()
+                return response
+            except Exception as e:
+                ERRORS.labels(method, endpoint, type(e).__name__).inc()
+                raise
+            finally:
+                IN_PROGRESS_REQUESTS.labels(method, endpoint).dec()
+
 
 @app.get("/models/{model_name}",
          tags=["Infos"],
          summary="Gets all the infos about the given model",
          response_model=GetModelInfosResponseModel)
 def _get_model_infos(request: Request, model_name: str):
-    if model_name not in model_dict:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
-    
-    model = model_dict[model_name]
-    if model_name == "RN50":
-        description = (
-            "This CLIP model uses ResNet-50 as the visual backbone and has undergone fine-tuning specifically for the Visual Word Sense "
-            "Disambiguation (VWSD) task. During fine-tuning, only certain parts of the model are trained to adapt the pre-trained CLIP to the "
-            "specific requirements of the task, leveraging the visual feature extraction capabilities of ResNet-50."
-        )
-        typical_usage = "Ideal when you want a CLIP model with a solid base like ResNet-50, tailored for a specific word disambiguation task based on images."
+    method, endpoint = 'GET', f'/models/{model_name}'
+    with REQUEST_TIME.labels(method, endpoint).time():
+        with REQUEST_LATENCY.labels(method, endpoint).time():
+            IN_PROGRESS_REQUESTS.labels(method, endpoint).inc()
+            try:
+                if model_name not in model_dict:
+                    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
 
-        with open("metrics/mrr.metric", 'r') as file: 
-            mrr = value_from_metric_content(file.read())
-        with open("metrics/hits1.metric", 'r') as file: 
-            hits1 = value_from_metric_content(file.read())
-        with open("metrics/hits3.metric", 'r') as file: 
-            hits3 = value_from_metric_content(file.read())
-        metrics = ModelMetrics(
-                mrr = mrr,
-                hits1 = hits1,
-                hits3 = hits1,
-            )
+                model = model_dict[model_name]
+                if model_name == "RN50":
+                    description = (
+                        "This CLIP model uses ResNet-50 as the visual backbone and has undergone fine-tuning specifically for the Visual Word Sense "
+                        "Disambiguation (VWSD) task. During fine-tuning, only certain parts of the model are trained to adapt the pre-trained CLIP to the "
+                        "specific requirements of the task, leveraging the visual feature extraction capabilities of ResNet-50."
+                    )
+                    typical_usage = "Ideal when you want a CLIP model with a solid base like ResNet-50, tailored for a specific word disambiguation task based on images."
 
-    elif model_name == "ViT-B-16":
-        description = (
-            "This CLIP configuration uses a Vision Transformer with a 16x16 patch size as the visual backbone. The model structure "
-            "harnesses the power of transformers for image processing. The model has been pre-trained and can be used for zero-shot "
-            "tasks or fine-tuning on specific tasks."
-        )
-        typical_usage = (
-            "Recommended when you want to benefit from the transformer architecture in visual processing. ViT-B-16 is lighter than larger models "
-            "but can still provide good performance in computer vision tasks and image-based word disambiguation."
-        )
-        metrics = ModelMetrics(
-                mrr = 0.810,
-                hits1 = 0.708,
-                hits3 = 0.894,
-            )
+                    with open("metrics/mrr.metric", 'r') as file:
+                        mrr = value_from_metric_content(file.read())
+                    with open("metrics/hits1.metric", 'r') as file:
+                        hits1 = value_from_metric_content(file.read())
+                    with open("metrics/hits3.metric", 'r') as file:
+                        hits3 = value_from_metric_content(file.read())
+                    metrics = ModelMetrics(
+                        mrr=mrr,
+                        hits1=hits1,
+                        hits3=hits1,
+                    )
 
-    response = GetModelInfosResponseModel(
-        data = GetModelInfosData(
-            model_name=model_name,
-            n_parameters=sum(p.numel() for p in model.parameters()),
-            description=description,
-            typical_usage=typical_usage,
-            metrics = metrics
-        )
-    )
+                elif model_name == "ViT-B-16":
+                    description = (
+                        "This CLIP configuration uses a Vision Transformer with a 16x16 patch size as the visual backbone. The model structure "
+                        "harnesses the power of transformers for image processing. The model has been pre-trained and can be used for zero-shot "
+                        "tasks or fine-tuning on specific tasks."
+                    )
+                    typical_usage = (
+                        "Recommended when you want to benefit from the transformer architecture in visual processing. ViT-B-16 is lighter than larger models "
+                        "but can still provide good performance in computer vision tasks and image-based word disambiguation."
+                    )
+                    metrics = ModelMetrics(
+                        mrr=0.810,
+                        hits1=0.708,
+                        hits3=0.894,
+                    )
 
-    return response
+                response = GetModelInfosResponseModel(
+                    data=GetModelInfosData(
+                        model_name=model_name,
+                        n_parameters=sum(p.numel() for p in model.parameters()),
+                        description=description,
+                        typical_usage=typical_usage,
+                        metrics=metrics
+                    )
+                )
+                REQUESTS.labels(method, endpoint, '200').inc()
+                return response
+            except Exception as e:
+                ERRORS.labels(method, endpoint, type(e).__name__).inc()
+                raise
+            finally:
+                IN_PROGRESS_REQUESTS.labels(method, endpoint).dec()
+
 
 @app.post("/models/{model_name}/predict_context",
           tags=["Predictions"],
@@ -168,29 +204,38 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
     The endpoint returns the index of the context with the highest score and
     the context itself.
     """
+    method, endpoint = 'POST', f'/models/{model_name}/predict_context'
+    with REQUEST_TIME.labels(method, endpoint).time():
+        with REQUEST_LATENCY.labels(method, endpoint).time():
+            IN_PROGRESS_REQUESTS.labels(method, endpoint).inc()
+            try:
+                if model_name not in model_dict:
+                    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
 
-    if model_name not in model_dict:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
+                word = payload.target_word
+                contexts = payload.contexts
+                image = app.state.preproc(Image.open(image.file))
 
-    word = payload.target_word
-    contexts = payload.contexts
-    image = app.state.preproc(Image.open(image.file))
+                scores = predict_context(model_dict[model_name], word, contexts, image)
+                predicted_index = scores.argmax().item()
 
-    scores = predict_context(model_dict[model_name], word, contexts, image)
-    predicted_index = scores.argmax().item()
-
-    response = PredictContextResponseModel(
-        data=PredictContextResponseData(
-            model_name=model_name,
-            target_word=word,
-            contexts=", ".join(contexts),
-            predicted_context=contexts[predicted_index],
-            predicted_score=scores.squeeze()[predicted_index].item(),
-            predicted_context_index=predicted_index
-        )
-    )
-
-    return response
+                response = PredictContextResponseModel(
+                    data=PredictContextResponseData(
+                        model_name=model_name,
+                        target_word=word,
+                        contexts=", ".join(contexts),
+                        predicted_context=contexts[predicted_index],
+                        predicted_score=scores.squeeze()[predicted_index].item(),
+                        predicted_context_index=predicted_index
+                    )
+                )
+                REQUESTS.labels(method, endpoint, '200').inc()
+                return response
+            except Exception as e:
+                ERRORS.labels(method, endpoint, type(e).__name__).inc()
+                raise
+            finally:
+                IN_PROGRESS_REQUESTS.labels(method, endpoint).dec()
 
 
 @app.post("/models/{model_name}/predict_images",
@@ -216,37 +261,45 @@ async def _predict_images(request: Request, model_name: str, payload: PredictIma
     The endpoint returns the index of the image with the highest score, indicating which image 
     has been evaluated as most relevant by the model.
     """
+    method, endpoint = 'POST', f'/models/{model_name}/predict_images'
+    with REQUEST_TIME.labels(method, endpoint).time():
+        with REQUEST_LATENCY.labels(method, endpoint).time():
+            IN_PROGRESS_REQUESTS.labels(method, endpoint).inc()
+            try:
+                if model_name not in model_dict:
+                    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
 
-    if model_name not in model_dict:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
-    
-    if len(images)>10 or len(images)<2:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail= "You should send a number of images between 1 and 10")
-    
-    word = payload.target_word
-    context = payload.context
+                if len(images) > 10 or len(images) < 2:
+                    raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                                        detail="You should send a number of images between 1 and 10")
 
-    processed_images = []
-    for image_file in images:
+                word = payload.target_word
+                context = payload.context
 
-        image_content = await image_file.read()
-        image_pil = Image.open(BytesIO(image_content))
-        processed_image = app.state.preproc(image_pil)
+                processed_images = []
+                for image_file in images:
+                    image_content = await image_file.read()
+                    image_pil = Image.open(BytesIO(image_content))
+                    processed_image = app.state.preproc(image_pil)
+                    processed_images.append(processed_image)
 
-        processed_images.append(processed_image)
+                images_tensor = torch.stack(processed_images).unsqueeze(0)
+                scores = predict(model_dict[model_name], [word], [context], images_tensor)
+                best_scores, best_indices = torch.max(scores, dim=1)
 
-    images_tensor = torch.stack(processed_images).unsqueeze(0)  
-    scores = predict(model_dict[model_name], [word], [context], images_tensor)
-    best_scores, best_indices = torch.max(scores, dim=1)
-
-    response = PredictImageResponseModel(
-        data=PredictImageResponseData(
-            model_name=model_name,
-            target_word=word,
-            context=context,
-            predicted_image_index=best_indices.tolist()[0],
-            predicted_score=best_scores.tolist()[0]
-        )
-    )
-
-    return response
+                response = PredictImageResponseModel(
+                    data=PredictImageResponseData(
+                        model_name=model_name,
+                        target_word=word,
+                        context=context,
+                        predicted_image_index=best_indices.tolist()[0],
+                        predicted_score=best_scores.tolist()[0]
+                    )
+                )
+                REQUESTS.labels(method, endpoint, '200').inc()
+                return response
+            except Exception as e:
+                ERRORS.labels(method, endpoint, type(e).__name__).inc()
+                raise
+            finally:
+                IN_PROGRESS_REQUESTS.labels(method, endpoint).dec()
