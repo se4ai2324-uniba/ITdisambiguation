@@ -19,7 +19,7 @@ tqdm~=4.66.1
 setuptools~=65.5.0
 dvc==3.27.0
 dvc-gdrive==2.20.0
-pytest
+locust
 
 # apis
 pydantic
