@@ -1,11 +1,12 @@
 from locust import HttpUser, task, between
 from urllib.request import urlopen
-from random import choice
+from random import choice, sample
 from io import BytesIO
 
+rand_images = [BytesIO(urlopen("https://picsum.photos/224/224").read()) for _ in range(15)]
+
 def get_random_images(n: int = 1):
-    url = "https://picsum.photos/224/224"
-    images = [BytesIO(urlopen(url).read()) for _ in range(n)]
+    images = sample(rand_images, n)
     if n == 1:
         return images[0]
     return images
