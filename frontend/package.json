@@ -7,7 +7,7 @@
     "start": "vite",
     "start:local": "env-cmd -f .env.local vite",
     "start:dev": "env-cmd -f .env.development vite",
-    "build": "vite build",
+    "build": "env-cmd -f .env.development vite build",
     "build:dev": "env-cmd -f .env.development vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
