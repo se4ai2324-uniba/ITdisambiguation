@@ -3,7 +3,7 @@ name: Pytest
 on:
   push:
     branches:
-      - pytest_action
+      - main
     paths:
       - 'src/**'
       - 'tests/**'
