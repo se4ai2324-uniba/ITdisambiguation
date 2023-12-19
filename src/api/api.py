@@ -221,7 +221,7 @@ async def _predict_images(request: Request, model_name: str, payload: PredictIma
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
     
     if len(images)>10 or len(images)<2:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail= "You should send a number of images between 1 and 10")
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail= "You should send a number of images between 2 and 10")
     
     word = payload.target_word
     context = payload.context
