@@ -18,7 +18,9 @@ from io import BytesIO
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "http://127.0.0.1:5173/"
+    "http://127.0.0.1:5173/",
+    "https://nice-island-02cd56d03.4.azurestaticapps.net",
+    "https://nice-island-02cd56d03.4.azurestaticapps.net/"
 ]
 
 model_dict = {}
