@@ -124,3 +124,45 @@ The model got the following results on the SemEval-2023 VWSD evaluation dataset:
 The model was tested on an highly ambiguous dataset, so we can see that it addresses the ambiguity problem very well, even if the context is very limited (only one word).
 Keep in mind that the model works only on limited context, so it **must** contain only a single word or a single contextual word plus some stop words.
 Another limitation is that we use WordNet as the ontology, that's not the most complete language ontology out there as it may lack some words.
+
+## Energy consumption
+In the training phase of the model, it has been tracked the enviromental impact, using Code Carbon, a Python package that enables to track emissions in order to estimate the carbon footprint of an experiment.
+
+The result of the training phase are reported into the [emissions.csv](../reports/emissions.csv) file, including metrics like: 
+- Duration of the compute (in seconds) 
+- Emissions as CO2-equivalents(in kg) 
+- Energy consumed (in kWh)
+
+
+The model was trained using a shortened dataset and training duration.
+In order to provide a scaled version of the carbon emissions and energy consumption metrics, related to the training of the model with the full size dataset,
+the values obtained have been multiplied by the scaling factor of the original dataset.
+
+```bibtex
+co2_eq_emissions: 
+	emissions: 0.001477 ([CO₂eq], in kg)
+	source: "Code carbon" 
+	training_type: "pre-training" 
+	geographical_location: "Quebec, Canada" 
+	hardware_used: 
+		cpu_model: "Intel(R) Xeon(R) CPU @ 2.20GHz"
+		cpu_count: 2
+		gpu_model: "Tesla T4"
+		gpu_count: 1
+```
+
+<p align="center">
+  <img src="energy_label.jpg" width="300px"/>
+</p>
+
+By installing the codecarbon library, and calling the following command: 
+
+```bibtex
+carbonboard --filepath="reports\codecarbon\emissions.csv" --port=port_number
+```
+
+it's possibile to show the dashboard related to emissions.csv file, observing a graphical overview of the report.
+
+<p align="center">
+  <img src="carbon_dashboard.png">
+</p>
