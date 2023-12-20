@@ -154,3 +154,15 @@ co2_eq_emissions:
 <p align="center">
   <img src="energy_label.jpg" width="300px"/>
 </p>
+
+By installing the codecarbon library, and calling the following command: 
+
+```bibtex
+carbonboard --filepath="reports\codecarbon\emissions.csv" --port=port_number
+```
+
+it's possibile to show the dashboard related to emissions.csv file, observing a graphical overview of the report.
+
+<p align="center">
+  <img src="carbon_dashboard.png">
+</p>
