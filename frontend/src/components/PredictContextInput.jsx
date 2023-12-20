@@ -57,7 +57,7 @@ export default function PredictContextInput({modelName}){
                 <input 
                     type="text" 
                     class="form-control" 
-                    placeholder="Aquila" 
+                    placeholder="Eagle" 
                     aria-describedby="target-addon"
                     id="target-word"
                     value={targetWord}
@@ -72,7 +72,7 @@ export default function PredictContextInput({modelName}){
                 <input
                     type="text" 
                     class="form-control" 
-                    placeholder="bird, constellation stars" 
+                    placeholder="Bird, Constellation stars" 
                     aria-describedby="context-addon"
                     id="contexts"
                     value={contexts}
