@@ -34,3 +34,7 @@ great-expectations
 pylint
 pytest
 flake8
+
+# Monitoring
+prometheus-client
+prometheus-fastapi-instrumentator
