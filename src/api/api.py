@@ -31,7 +31,6 @@ model_dict = {}
 
 
 @asynccontextmanager
-# def _load_models_and_transformation():
 async def lifespan(app: FastAPI):
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     __pretrain_models = {"RN50": "openai",
