@@ -58,7 +58,7 @@ export default function PredictImagesInput({modelName}){
                 <input 
                     type="text" 
                     class="form-control" 
-                    placeholder="Aquila" 
+                    placeholder="Eagle" 
                     aria-describedby="target-addon"
                     id="target-word"
                     value={targetWord}
@@ -69,11 +69,11 @@ export default function PredictImagesInput({modelName}){
         </p>
         <p>
             <div class="input-group mb-3">
-            <span class="input-group-text" id="context-addon">Contexts</span>
+            <span class="input-group-text" id="context-addon">Context</span>
                 <input
                     type="text" 
                     class="form-control" 
-                    placeholder="bird" 
+                    placeholder="Bird" 
                     aria-describedby="context-addon"
                     id="contexts"
                     value={context}

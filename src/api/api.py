@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("src")
 import re
 import torch
@@ -14,17 +15,22 @@ from fastapi.encoders import jsonable_encoder
 from contextlib import asynccontextmanager
 from typing import List
 from io import BytesIO
+from api.prometheus.instrumentator import instrumentator
+from prometheus_client import start_http_server
+
 
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "http://127.0.0.1:5173/"
+    "http://127.0.0.1:5173/",
+    "https://nice-island-02cd56d03.4.azurestaticapps.net",
+    "https://nice-island-02cd56d03.4.azurestaticapps.net/"
 ]
 
 model_dict = {}
 
+
 @asynccontextmanager
-#def _load_models_and_transformation():
 async def lifespan(app: FastAPI):
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     __pretrain_models = {"RN50": "openai",
@@ -41,6 +47,7 @@ async def lifespan(app: FastAPI):
         model_dict[model_name] = model
     yield
 
+
 app = FastAPI(
     title="Image Text disambiguation APIs",
     version="1.0",
@@ -55,6 +62,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+instrumentator.instrument(app).expose(app, include_in_schema=False, should_gzip=True)
+
 def checker_context(target_word: str = Form(...), contexts: str = Form(...)):
     try:
         return PredictContextPayload(target_word=target_word, contexts=contexts)
@@ -63,6 +72,7 @@ def checker_context(target_word: str = Form(...), contexts: str = Form(...)):
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=jsonable_encoder(e.errors())
         )
+
 
 def checker_images(target_word: str = Form(...), context: str = Form(...)):
     try:
@@ -73,8 +83,10 @@ def checker_images(target_word: str = Form(...), context: str = Form(...)):
             detail=jsonable_encoder(e.errors())
         )
 
+
 def value_from_metric_content(metric_content: str):
     return float(re.search(r'\d+\.\d+', metric_content).group())
+
 
 @app.get("/models",
          tags=["Infos"],
@@ -83,11 +95,12 @@ def value_from_metric_content(metric_content: str):
 def _get_models(request: Request):
     model_names = list(model_dict.keys())
     response = GetModelNamesResponseModel(
-        data = GetModelNamesData(
-            model_names = model_names
+        data=GetModelNamesData(
+            model_names=model_names
         )
     )
     return response
+
 
 @app.get("/models/{model_name}",
          tags=["Infos"],
@@ -96,7 +109,7 @@ def _get_models(request: Request):
 def _get_model_infos(request: Request, model_name: str):
     if model_name not in model_dict:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
-    
+
     model = model_dict[model_name]
     if model_name == "RN50":
         description = (
@@ -106,17 +119,17 @@ def _get_model_infos(request: Request, model_name: str):
         )
         typical_usage = "Ideal when you want a CLIP model with a solid base like ResNet-50, tailored for a specific word disambiguation task based on images."
 
-        with open("metrics/mrr.metric", 'r') as file: 
+        with open("metrics/mrr.metric", 'r') as file:
             mrr = value_from_metric_content(file.read())
-        with open("metrics/hits1.metric", 'r') as file: 
+        with open("metrics/hits1.metric", 'r') as file:
             hits1 = value_from_metric_content(file.read())
-        with open("metrics/hits3.metric", 'r') as file: 
+        with open("metrics/hits3.metric", 'r') as file:
             hits3 = value_from_metric_content(file.read())
         metrics = ModelMetrics(
-                mrr = mrr,
-                hits1 = hits1,
-                hits3 = hits1,
-            )
+            mrr=mrr,
+            hits1=hits1,
+            hits3=hits1,
+        )
 
     elif model_name == "ViT-B-16":
         description = (
@@ -129,29 +142,31 @@ def _get_model_infos(request: Request, model_name: str):
             "but can still provide good performance in computer vision tasks and image-based word disambiguation."
         )
         metrics = ModelMetrics(
-                mrr = 0.810,
-                hits1 = 0.708,
-                hits3 = 0.894,
-            )
+            mrr=0.810,
+            hits1=0.708,
+            hits3=0.894,
+        )
 
     response = GetModelInfosResponseModel(
-        data = GetModelInfosData(
+        data=GetModelInfosData(
             model_name=model_name,
             n_parameters=sum(p.numel() for p in model.parameters()),
             description=description,
             typical_usage=typical_usage,
-            metrics = metrics
+            metrics=metrics
         )
     )
 
     return response
+
 
 @app.post("/models/{model_name}/predict_context",
           tags=["Predictions"],
           summary="Predict the most relevant context given a list of contexts, an image and a target word",
           response_description="The most relevant context and its associated index",
           response_model=PredictContextResponseModel)
-def _predict_context(request: Request, model_name: str, payload: PredictContextPayload = Depends(checker_context), image: UploadFile = File(...)):
+def _predict_context(request: Request, model_name: str, payload: PredictContextPayload = Depends(checker_context),
+                     image: UploadFile = File(...)):
     """
     Predict Context API for a specific model.
 
@@ -162,7 +177,7 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
     - **image**: An image used by the model to capture the right context.
     - **context**: A list of candidate contexts. The model will select the most
     relevant given the image and the target word.
-    - **target_word**: The target word of interest. The model will try to identify the 
+    - **target_word**: The target word of interest. The model will try to identify the
     most relevant context that corresponds to this word in the specified context.
 
     The endpoint returns the index of the context with the highest score and
@@ -198,7 +213,8 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
           summary="Predict the most relevant image given a list of images, a context and a target word",
           response_description="The index of the image and the scores",
           response_model=PredictImageResponseModel)
-async def _predict_images(request: Request, model_name: str, payload: PredictImagesPayload = Depends(checker_images), images: List[UploadFile] = File(...)):
+async def _predict_images(request: Request, model_name: str, payload: PredictImagesPayload = Depends(checker_images),
+                          images: List[UploadFile] = File(...)):
     """
     Predict Images API for a specific model.
 
@@ -206,36 +222,35 @@ async def _predict_images(request: Request, model_name: str, payload: PredictIma
     After processing the images with the model, the endpoint returns the index and score
     of the image deemed most relevant in relation to the provided target word and context.
 
-    - **images**: A list of uploaded images. Each image will be evaluated by the model 
+    - **images**: A list of uploaded images. Each image will be evaluated by the model
     to determine its relevance to the context and the target word.
-    - **context**: The context in which the target word is used. 
+    - **context**: The context in which the target word is used.
     This context helps the model to interpret the target word as accurately as possible.
-    - **target_word**: The target word of interest. The model will try to identify the 
+    - **target_word**: The target word of interest. The model will try to identify the
     most relevant image that corresponds to this word in the specified context.
 
-    The endpoint returns the index of the image with the highest score, indicating which image 
+    The endpoint returns the index of the image with the highest score, indicating which image
     has been evaluated as most relevant by the model.
     """
 
     if model_name not in model_dict:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
-    
+
     if len(images)>10 or len(images)<2:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail= "You should send a number of images between 1 and 10")
-    
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail= "You should send a number of images between 2 and 10")
+
     word = payload.target_word
     context = payload.context
 
     processed_images = []
     for image_file in images:
-
         image_content = await image_file.read()
         image_pil = Image.open(BytesIO(image_content))
         processed_image = app.state.preproc(image_pil)
 
         processed_images.append(processed_image)
 
-    images_tensor = torch.stack(processed_images).unsqueeze(0)  
+    images_tensor = torch.stack(processed_images).unsqueeze(0)
     scores = predict(model_dict[model_name], [word], [context], images_tensor)
     best_scores, best_indices = torch.max(scores, dim=1)
 
