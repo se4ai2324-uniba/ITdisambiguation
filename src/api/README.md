@@ -19,6 +19,56 @@ The following endpoints are exposed by the server:
 - **/models/{model_name}/predict_context**: Predict the most relevant context given a list of contexts, an image and a target word
 - **/models/{model_name}/predict_images**: Predict the most relevant image given a list of images, a context and a target word
 
-Prometheus and Graphana
-================
-TODO
+# Prometheus Monitoring for FastAPI
+In addition to the API, we also implemented Prometheus for resource and performance monitoring. 
+The monitoring is facilitated by the `prometheus_fastapi_instrumentator` package, which provides a convenient way to instrument a FastAPI application and collect various metrics.
+
+## Instrumentator Configuration
+
+The `Instrumentator` object is configured to collect metrics on request size, response size, request latency, and the total number of requests. It is set up to group status codes, ignore endpoints that do not have templated routes, and track in-progress requests. Additionally, the `/metrics` endpoint is excluded from instrumentation to prevent monitoring of the metrics path itself.
+
+Here's a brief overview of each metric being collected:
+
+### Request Size (`request_size`)
+
+Tracks the size of incoming requests to the FastAPI application, providing insights into the incoming data load the server is handling. Given the nature of our project this metric is very important
+
+### Response Size (`response_size`)
+
+Measures the size of responses sent from the FastAPI application, which is useful for understanding the amount of data being served to clients.
+
+### Latency (`latency`)
+
+Records the latency of requests, offering a direct measure of the response times that clients are experiencing when interacting with the application.
+
+### Total Number of Requests (`no_requests`)
+
+Counts the total number of requests received by the FastAPI application, segmented by handler, method, and status. This metric is crucial for observing the traffic patterns and the load on the application.
+
+## Environment Variables
+
+- `METRICS_NAMESPACE`: Configurable namespace for the metrics, defaulting to "fastapi".
+- `METRICS_SUBSYSTEM`: Configurable subsystem for the metrics, defaulting to "app".
+
+These can be set to organize and distinguish metrics in environments where multiple applications or instances are being monitored.
+
+[Prometheus Local Config](../../prometheus.yml)
+
+[Prometheus Deploy Config](../../prometheus-deploy.yml)
+
+[Instrumentator](./prometheus/instrumentator.py)
+
+## Usage
+
+Once configured, Prometheus scrape the `/metrics` endpoint of our FastApi application to collect the defined metrics.
+Metric scraping of the backend deployed is available at this link : [Metrics](https://itdisambiguation.azurewebsites.net/metrics)
+
+# Grafana
+
+![Counters Row](../../docs/images/Grafana/grafana1.png)
+
+![Size Row](../../docs/images/Grafana/grafana2.png)
+
+![Latency Row](../../docs/images/Grafana/grafana3.png)
+
+![Usage Row](../../docs/images/Grafana/grafana4.png)
