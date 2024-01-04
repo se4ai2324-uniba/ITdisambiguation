@@ -79,6 +79,7 @@ Project Organization
 
 --------
 
+
 # Grafana
 We used the Grafana tool to be able to graphically display some values ​​obtained from Prometheus metrics by performing queries.
 The dashboard is divided into four rows, each displaying data related to the past month:
@@ -105,6 +106,68 @@ In the fourth row, there are two graphs depicting resource usage:
 - The first graph illustrates the usage of machine RAM.
 - The second graph focuses on the average CPU usage.
 ![Usage Row](./docs/images/Grafana/grafana4.png)
+
+
+# Application Deployment Architecture
+
+This document provides an overview of the deployment architecture for our web application, which consists of monitoring tools, a backend service, and a frontend interface.
+
+## Architecture Diagram
+
+![Deployment Architecture](./docs/images/deploy/itdis_architecture_deploy.png)
+
+## Azure Deployment
+
+Our web application is hosted on Microsoft Azure, utilizing three separate Azure virtual machines (VMs) to ensure high availability, scalability, and separation of concerns. It was necessary to split the Azure instances because in particular the backend appears to be quite heavy due to the complexity of the taks.
+
+### Virtual Machine Distribution
+
+- **VM1 - Monitoring**: Hosts our monitoring stack which consists of Prometheus and Grafana. This VM is dedicated to collecting and visualizing metrics from our backend service.
+
+- **VM2 - Backend**: Runs our FastAPI backend service. This backend is responsible for handling API requests, processing data, and performing core logic.
+
+- **VM3 - Frontend**: Serves the React frontend application. Designed to deliver a responsive and user-friendly interface, this VM hosts the static files and assets required for the frontend.
+
+### VM1 - Monitoring
+
+  - To configure the virtual machine we used docker compose of the default version of grafana and a customized version of prometheus in which, starting from the original version, we modify the prometheus.yml to allow scraping from the VM2 - Backend.
+  Below is the docker-compose code used
+  ```
+    version: '3.8'
+
+    services:
+      grafana:
+        image: grafana/grafana
+        ports:
+          - "3000:3000"
+
+      prometheus:
+        image: giovtemp/it-disambiguation-prometheus:1.1
+        ports:
+          - "9090:9090"
+
+  ```
+[Link to VM1](https://itdisambiguation.azurewebsites.net)
+
+
+
+### VM2 - Backend
+
+[Link to VM2](https://itdisambiguation.azurewebsites.net)
+
+### VM3 - Backend
+
+[Link to VM3](https://nice-island-02cd56d03.4.azurestaticapps.net)
+
+
+Each VM is configured to work in tandem, offering a cohesive and seamless workflow from the user interface down to the data layer.
+
+## Monitoring with Better Uptime
+
+In addition to our internal monitoring with Prometheus and Grafana, we utilize Better Uptime to externally monitor the availability of both the backend and frontend services.
+
+---
+
 
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
