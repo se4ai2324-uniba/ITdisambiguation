@@ -155,7 +155,7 @@ Our web application is hosted on Microsoft Azure, utilizing three separate Azure
           - "9090:9090"
 
   ```
-[Link to VM1](https://itdisambiguation.azurewebsites.net)
+[Link to VM1](https://it-disambiguation-monitoring.azurewebsites.net/login)
 
 
 
