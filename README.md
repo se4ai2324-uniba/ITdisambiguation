@@ -173,6 +173,13 @@ Each VM is configured to work in tandem, offering a cohesive and seamless workfl
 ## Monitoring with Better Uptime
 
 In addition to our internal monitoring with Prometheus and Grafana, we utilize Better Uptime to externally monitor the availability of both the backend and frontend services.
+By checking [this page](https://itdisambiguation.betteruptime.com/) it is possible to have an overview of the current status of tha listed websites useful for the system, and any future maintenance and previous incidents if occurred. By joining the application, each member of the team receive an alert whenever an error occurs.
+
+Here's the view to the monitors:
+
+![First Monitor](./docs/images/BU/monitor1.png)
+
+![Second Monitor](./docs/images/BU/monitor2.png)
 
 ---
 
