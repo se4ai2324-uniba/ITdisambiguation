@@ -70,3 +70,6 @@ Once configured, Prometheus scrape the `/metrics` endpoint of our FastApi applic
 Metric scraping of the backend deployed is available at this link : [Metrics](https://itdisambiguation.azurewebsites.net/metrics)
 
 # Grafana
+We used the Grafana tool to be able to graphically display some values ​​obtained from Prometheus metrics by performing queries.
+The dashboard and metrics are displayed in the following readme:
+[Main Readme](../../README.md)
