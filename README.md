@@ -79,4 +79,15 @@ Project Organization
 
 --------
 
+# Grafana
+
+![Counters Row](./docs/images/Grafana/grafana1.png)
+
+![Size Row](./docs/images/Grafana/grafana2.png)
+
+![Latency Row](./docs/images/Grafana/grafana3.png)
+
+![Usage Row](./docs/images/Grafana/grafana4.png)
+
+
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>

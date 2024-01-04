@@ -64,11 +64,3 @@ Once configured, Prometheus scrape the `/metrics` endpoint of our FastApi applic
 Metric scraping of the backend deployed is available at this link : [Metrics](https://itdisambiguation.azurewebsites.net/metrics)
 
 # Grafana
-
-![Counters Row](../../docs/images/Grafana/grafana1.png)
-
-![Size Row](../../docs/images/Grafana/grafana2.png)
-
-![Latency Row](../../docs/images/Grafana/grafana3.png)
-
-![Usage Row](../../docs/images/Grafana/grafana4.png)
