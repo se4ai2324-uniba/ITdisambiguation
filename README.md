@@ -80,29 +80,30 @@ Project Organization
 --------
 
 # Grafana
-Abbiamo utilizzato il tool Grafana per poter visualizzare graficamente alcuni valori ottenuti dalle metriche di Prometheus effettuando delle query. 
-La dashboard in questione è organizzata in quattro sezioni principali, ognuna focalizzata su diverse metriche raccolte nell'ultimo mese. 
-La prima sezione presenta quattro contatori distinti:
-- Il primo contatore rappresenta il totale delle richieste HTTP effettuate.
-- Il secondo contatore mostra il numero di risposte con codice di stato di errore (nella fascia 400) relative alle richieste di tipo GET.
-- Il terzo contatore indica il numero di risposte con codice di stato di errore (nella fascia 500) relative alle richieste di tipo GET.
-- Il quarto contatore evidenzia il numero di risposte con codice di stato di errore (nella fascia 400) relative alle richieste di tipo POST.
-- Il quinto contatore mostra il numero di risposte con codice di stato di errore (nella fascia 500) relative alle richieste di tipo POST.
+We used the Grafana tool to be able to graphically display some values ​​obtained from Prometheus metrics by performing queries.
+The dashboard is divided into four rows, each displaying data related to the past month:
+
+The first row contains four counters:
+- The first counter represents the total number of HTTP requests made.
+- The second counter displays the number of responses that returned error status codes (in the 400 range) for GET requests.
+- The third counter shows the number of responses returning error status codes (in the 500 range) for GET requests.
+- The fourth counter indicates the number of responses returning error status codes (in the 400 range) for POST requests.
+- The fifth counter represents the number of responses returning error status codes (in the 500 range) for POST requests.
 ![Counters Row](./docs/images/Grafana/grafana1.png)
 
-La seconda sezione comprende due serie temporali:
-- Una relativa alle dimensioni delle richieste (request size) espresse in byte.
-- L'altra relativa alle dimensioni delle risposte (response size) anch'esse espresse in byte.
+The second row features two time series:
+- One related to request sizes measured in bytes.
+- The other concerning response sizes, also measured in bytes.
 ![Size Row](./docs/images/Grafana/grafana2.png)
 
-Nella terza sezione, sono presenti due grafici:
-- Uno mostra la latenza media nelle risposte.
-- L'altro evidenzia la latenza media specifica per ogni handler.
+The third row contains two graphs:
+- One displaying the average latency in responses.
+- The other highlighting the average latency per handler.
 ![Latency Row](./docs/images/Grafana/grafana3.png)
 
-Infine, la quarta sezione ospita due grafici relativi all'utilizzo delle risorse:
-- Il primo grafico riflette l'uso della memoria RAM della macchina.
-- Il secondo grafico è focalizzato sull'utilizzo medio della CPU.
+In the fourth row, there are two graphs depicting resource usage:
+- The first graph illustrates the usage of machine RAM.
+- The second graph focuses on the average CPU usage.
 ![Usage Row](./docs/images/Grafana/grafana4.png)
 
 
