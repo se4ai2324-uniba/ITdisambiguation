@@ -20,9 +20,10 @@ The following endpoints are exposed by the server:
 - **/models/{model_name}/predict_images**: Predict the most relevant image given a list of images, a context and a target word
 
 API Documentation
-The documentation is available at these links
-ReDoc : https://itdisambiguation.azurewebsites.net/redoc
-Swagger : https://itdisambiguation.azurewebsites.net/docs
+The documentation is available at these links:
+
+- ReDoc : https://itdisambiguation.azurewebsites.net/redoc
+- Swagger : https://itdisambiguation.azurewebsites.net/docs
 
 # Prometheus Monitoring for FastAPI
 In addition to the API, we also implemented Prometheus for resource and performance monitoring. 
