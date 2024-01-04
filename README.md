@@ -83,16 +83,16 @@ Project Organization
 Abbiamo utilizzato il tool Grafana per poter visualizzare graficamente alcuni valori ottenuti dalle metriche di Prometheus effettuando delle query. 
 La dashboard in questione è organizzata in quattro sezioni principali, ognuna focalizzata su diverse metriche raccolte nell'ultimo mese. 
 La prima sezione presenta quattro contatori distinti:
-    - Il primo contatore rappresenta il totale delle richieste HTTP effettuate.
-    - Il secondo contatore mostra il numero di risposte con codice di stato di errore (nella fascia 400) relative alle richieste di tipo GET.
-    - Il terzo contatore indica il numero di risposte con codice di stato di errore (nella fascia 500) relative alle richieste di tipo GET.
-    - Il quarto contatore evidenzia il numero di risposte con codice di stato di errore (nella fascia 400) relative alle richieste di tipo POST.
-    - Il quinto contatore mostra il numero di risposte con codice di stato di errore (nella fascia 500) relative alle richieste di tipo POST.
+- Il primo contatore rappresenta il totale delle richieste HTTP effettuate.
+- Il secondo contatore mostra il numero di risposte con codice di stato di errore (nella fascia 400) relative alle richieste di tipo GET.
+- Il terzo contatore indica il numero di risposte con codice di stato di errore (nella fascia 500) relative alle richieste di tipo GET.
+- Il quarto contatore evidenzia il numero di risposte con codice di stato di errore (nella fascia 400) relative alle richieste di tipo POST.
+- Il quinto contatore mostra il numero di risposte con codice di stato di errore (nella fascia 500) relative alle richieste di tipo POST.
 ![Counters Row](./docs/images/Grafana/grafana1.png)
 
 La seconda sezione comprende due serie temporali:
-    - Una relativa alle dimensioni delle richieste (request size) espresse in byte.
-    - L'altra relativa alle dimensioni delle risposte (response size) anch'esse espresse in byte.
+- Una relativa alle dimensioni delle richieste (request size) espresse in byte.
+- L'altra relativa alle dimensioni delle risposte (response size) anch'esse espresse in byte.
 ![Size Row](./docs/images/Grafana/grafana2.png)
 
 Nella terza sezione, sono presenti due grafici:
