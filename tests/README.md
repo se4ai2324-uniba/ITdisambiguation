@@ -24,6 +24,8 @@ This folder contains all tests needed for code, model and data. The folder is st
     4. Change in the learning rate
 - `preprocessing_testing` Check the correct behavior of the preprocessing code.
 
+A Great Expectations suite has been also been used during the dataset testing, in combination with pytest by asserting the final outcome of the suite.  
+
 ## Usage
 Tests should only be ran using the command
 ```
