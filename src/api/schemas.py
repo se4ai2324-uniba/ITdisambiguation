@@ -3,6 +3,7 @@ from nltk.corpus import stopwords
 from http import HTTPStatus
 from typing import List
 
+
 class PredictContextPayload(BaseModel):
     target_word: str
     contexts: str
@@ -62,6 +63,7 @@ class PredictImagesPayload(BaseModel):
 
         return context
 
+
 class PredictContextResponseData(BaseModel):
     model_name: str
     target_word: str
@@ -70,10 +72,12 @@ class PredictContextResponseData(BaseModel):
     predicted_score: float
     predicted_context_index: int
 
+
 class PredictContextResponseModel(BaseModel):
     message: str = HTTPStatus.OK.phrase
     status_code: int = HTTPStatus.OK.value
     data: PredictContextResponseData
+
 
 class PredictImageResponseData(BaseModel):
     model_name: str
@@ -82,30 +86,36 @@ class PredictImageResponseData(BaseModel):
     predicted_image_index: int
     predicted_score: float
 
+
 class PredictImageResponseModel(BaseModel):
     message: str = HTTPStatus.OK.phrase
     status_code: int = HTTPStatus.OK.value
     data: PredictImageResponseData
+
 
 class ModelMetrics(BaseModel):
     mrr: float
     hits1: float
     hits3: float
 
+
 class GetModelInfosData(BaseModel):
     model_name: str
     n_parameters: int
     description: str
-    typical_usage:str
+    typical_usage: str
     metrics: ModelMetrics
+
 
 class GetModelInfosResponseModel(BaseModel):
     message: str = HTTPStatus.OK.phrase
     status_code: int = HTTPStatus.OK.value
     data: GetModelInfosData
 
+
 class GetModelNamesData(BaseModel):
     model_names: List[str]
+
 
 class GetModelNamesResponseModel(BaseModel):
     message: str = HTTPStatus.OK.phrase

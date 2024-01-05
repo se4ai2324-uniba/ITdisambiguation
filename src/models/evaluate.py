@@ -1,7 +1,6 @@
 """ Module used to evaluate the model """
 
 import sys
-sys.path.append('src')
 from torch.utils.data import DataLoader
 from conf import config
 from utils import VWSDDataset, Disambiguator
@@ -9,6 +8,9 @@ import dagshub
 import mlflow
 import torch
 import open_clip
+
+sys.path.append('src')
+
 
 DEV = 'cuda' if torch.cuda.is_available() else 'cpu'
 disambiguator = Disambiguator(device=DEV)
@@ -36,9 +38,9 @@ def compute_metrics(scores_tot, pos):
 
 def predict(model_1, words, contexts, images_1):
 
-    """ 
-    Method used to make the prediction 
-        
+    """
+    Method used to make the prediction
+
     images_1 must be of shape [batch_size, n_images, channels, height, width]
     """
 
@@ -51,6 +53,7 @@ def predict(model_1, words, contexts, images_1):
                   imgs_emb.view(text_emb.size(0), n_images, -1))).softmax(-1)
     return scores_tot
 
+
 def predict_context(model_1, word, contexts, image):
 
     """ Method used to predict the context given an image """
@@ -62,6 +65,7 @@ def predict_context(model_1, word, contexts, image):
     imgs_emb = model_1.encode_image(image.unsqueeze(0), normalize=True)
     scores = (100 * torch.einsum("ij,kj->ik", imgs_emb, text_emb)).softmax(-1)
     return scores
+
 
 if __name__ == '__main__':
     with torch.no_grad():

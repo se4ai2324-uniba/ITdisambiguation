@@ -1,13 +1,12 @@
 import sys
 
-sys.path.append("src")
 import re
 import torch
 import open_clip
 from PIL import Image
 from conf import config
 from models.evaluate import predict_context, predict
-from api.schemas import *
+from api.schemas import PredictContextPayload, PredictImagesPayload, GetModelNamesResponseModel, GetModelNamesData, GetModelInfosResponseModel, ModelMetrics, GetModelInfosData, PredictContextResponseModel, PredictContextResponseData, PredictImageResponseModel, PredictImageResponseData
 from pydantic import ValidationError
 from fastapi import FastAPI, HTTPException, status, Request, File, UploadFile, Depends, Form
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,21 +15,20 @@ from contextlib import asynccontextmanager
 from typing import List
 from io import BytesIO
 from api.prometheus.instrumentator import instrumentator
-from prometheus_client import start_http_server
+sys.path.append("src")
 
 
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "http://127.0.0.1:5173/",
-    "https://nice-island-02cd56d03.4.azurestaticapps.net",
-    "https://nice-island-02cd56d03.4.azurestaticapps.net/"
+    "http://127.0.0.1:5173/"
 ]
 
 model_dict = {}
 
 
 @asynccontextmanager
+# def _load_models_and_transformation():
 async def lifespan(app: FastAPI):
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     __pretrain_models = {"RN50": "openai",
@@ -63,6 +61,7 @@ app.add_middleware(
 )
 
 instrumentator.instrument(app).expose(app, include_in_schema=False, should_gzip=True)
+
 
 def checker_context(target_word: str = Form(...), contexts: str = Form(...)):
     try:
@@ -128,7 +127,7 @@ def _get_model_infos(request: Request, model_name: str):
         metrics = ModelMetrics(
             mrr=mrr,
             hits1=hits1,
-            hits3=hits1,
+            hits3=hits3,
         )
 
     elif model_name == "ViT-B-16":
@@ -236,8 +235,9 @@ async def _predict_images(request: Request, model_name: str, payload: PredictIma
     if model_name not in model_dict:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
 
-    if len(images)>10 or len(images)<2:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail= "You should send a number of images between 2 and 10")
+    if len(images) > 10 or len(images) < 2:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            detail="You should send a number of images between 1 and 10")
 
     word = payload.target_word
     context = payload.context
