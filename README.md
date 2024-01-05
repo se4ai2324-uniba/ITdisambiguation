@@ -165,9 +165,15 @@ Our web application is hosted on Microsoft Azure, utilizing three separate Azure
 
 ### VM2 - Backend
 
-[Link to VM2](https://itdisambiguation.azurewebsites.net)
+Our FastAPI backend is encapsulated within a Docker container, originating from a `python:3.8-slim-buster` image to ensure a lean and secure deployment environment. The containerization process leverages Docker to facilitate consistent deployment and operational scalability. Dependencies are meticulously managed through `requirements_docker.txt`, optimizing the build process.
 
-### VM3 - Backend
+The backend service is hosted on an Azure Basic B3 instance characterized by 4 vCPUs and 7 GB of memory, which is adept for our development and testing workloads. The instance offers an ACU (Azure Compute Unit) of 100, signifying robust computing capabilities to support our application's backend processes. With 10 GB of remote storage and the capacity to scale up to 3 instances, the setup guarantees high availability with an SLA of 99.95%, ensuring the backend's resilience and consistent performance.
+
+Leveraging CI/CD pipelines, the Docker images built during the GitHub Actions workflows are made available at our Docker Hub repository. Each image is tagged with the SHA of the commit that triggered the action, allowing for precise version control and traceability. You can find the Docker images and their respective tags [here](https://hub.docker.com/r/franchinifelice/itdisambiguation/tags).
+
+[Link to VM2 redoc](https://itdisambiguation.azurewebsites.net/redoc)
+
+### VM3 - Frontend
 
 [Link to VM3](https://nice-island-02cd56d03.4.azurestaticapps.net)
 
