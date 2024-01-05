@@ -82,11 +82,14 @@ Project Organization
 # Pylint
 We utilized the Pylint tool to conduct a comprehensive code cleanup process aimed at achieving a more refined, robust, and readable Python codebase. This effort was directed at minimizing errors and streamlining long-term maintenance.
 
-Through the analyses performed using Pylint, the predominant issues identified were related to indentation errors, extraneous whitespace, lack of module and function-level documentation, overlapping variable names used both locally and globally, as well as instances of excessively long lines. 
+Through the analyses performed using Pylint, the predominant issues identified were related to indentation errors, extraneous whitespace, lack of module and function-level documentation, overlapping variable names used both locally and globally and instances of excessively long lines. 
 
 Additionally, in order to streamline the analysis process and focus on the most critical aspects, we made a deliberate choice to disable specific pylint error flags. Notably, we disabled 'import-error' flags associated with module imports and errors related to an excessive number of local variables flagged under 'too-many-locals'.
 
 This approach allowed us to concentrate on addressing the most crucial code quality aspects while improving readability, maintainability, and adherence to coding standards within the project.
+
+# Flake8
+We also used the Flake8 tool to write cleaner, more readable, and more easily maintainable code, reducing common errors and promoting the adoption of best practices in writing Python code. Even in this case most of the errors were related to indentation errors, extraneous whitespace and instances of excessively long lines. Then, we solve all these errors and we obtain good results from the analyses
 
 # Grafana
 We used the Grafana tool to be able to graphically display some values ​​obtained from Prometheus metrics by performing queries.
