@@ -89,7 +89,8 @@ Additionally, in order to streamline the analysis process and focus on the most 
 This approach allowed us to concentrate on addressing the most crucial code quality aspects while improving readability, maintainability, and adherence to coding standards within the project.
 
 # Flake8
-We also used the Flake8 tool to write cleaner, more readable, and more easily maintainable code, reducing common errors and promoting the adoption of best practices in writing Python code. Even in this case most of the errors were related to indentation errors, extraneous whitespace and instances of excessively long lines. Then, we solve all these errors and we obtain good results from the analyses
+We also used the Flake8 tool to write cleaner, more readable, and more easily maintainable code, reducing common errors and promoting the adoption of best practices in writing Python code. Even in this case most of the errors were related to indentation errors, extraneous whitespace and instances of excessively long lines. Then, we solve all these errors and we obtain good results from the analyses.
+![Flake8 Report](./docs/images/Flake8/Flake8Report.png)
 
 # Grafana
 We used the Grafana tool to be able to graphically display some values ​​obtained from Prometheus metrics by performing queries.
