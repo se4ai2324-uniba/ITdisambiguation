@@ -175,6 +175,12 @@ Leveraging CI/CD pipelines, the Docker images built during the GitHub Actions wo
 
 ### VM3 - Frontend
 
+While we have a Dockerfile set up to build a containerized version of our React-based frontend, strategic decisions for hosting on Azure have led us to a different path to optimize for cost and performance. Considering the lightweight nature of our frontend, we opted to deploy it as a Static Web App on Azure, which offers a free hosting plan perfectly suited for applications like ours.
+
+The Azure Static Web App service automates the build and deployment process, enhancing developer productivity and operational efficiency. This service simplifies our deployment workflow and reduces overhead by eliminating the need for container orchestration. Moreover, it aligns with our cost-efficiency goals while still providing the scalability and reliability Azure is known for.
+
+To ensure quality and stability, our CI/CD pipeline is configured to automatically build the frontend and conduct checks before any changes are merged into the `main` branch. This process guarantees that updates are seamlessly and securely deployed to the Azure-hosted application, maintaining a consistent and reliable user experience.
+
 [Link to VM3](https://nice-island-02cd56d03.4.azurestaticapps.net)
 
 
