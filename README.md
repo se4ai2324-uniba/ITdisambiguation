@@ -31,50 +31,61 @@ The model was specifically built to address the [SemEval-2023 Visual Word Sense 
 Project Organization
 ------------
 
+    ├── data                        <- data folder
+    │   ├── external
+    │   ├── interim
+    │   ├── processed
+    │   ├── raw
+    │   ├── README.md
+    │   ├── Test.dvc
+    │   └── Train.dvc
+    ├── docker-compose.yml
+    ├── docs
+    ├── dvc.lock
+    ├── dvc.yaml                    <- DVC metadata
+    ├── frontend			        <- frontend application
+    │   ├── Dockerfile
+    │   ├── index.html
+    │   ├── package.json
+    │   ├── package-lock.json
+    │   ├── public
+    │   ├── README.md
+    │   ├── src
+    │   └── vite.config.js
     ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+    ├── locustfile.py		        <- locustfile for application loads testing
+    ├── Makefile
+    ├── metrics                     <- prediction metrics of the current model
+    │   ├── hits1.metric
+    │   ├── hits3.metric
+    │   └── mrr.metric
+    ├── models                      <- trained and serialized models
+    ├── notebooks
+    ├── prometheus-deploy.yml
+    ├── prometheus.yml
+    ├── README.md
+    ├── references
+    ├── reports                     <- pylint reports
+    ├── requirements_docker.txt     <- requirements to be used by Docker
+    ├── requirements.txt            <- python requirements
+    ├── setup.py
+    ├── src
+    │   ├── api                     <- code for the APIs
+    │   ├── conf.py                 <- training configuration file
+    │   ├── data                    <- preprocessing code
+    │   ├── Dockerfile
+    │   ├── __init__.py
+    │   ├── models                  <- training and evaluation of the model
+    │   └── utils.py
+    ├── test_environment.py
+    ├── tests                       <- pytest folder
+    │   ├── api_testing             <- tests for the APIs
+    │   ├── behavioral_testing      <- tests of model's behavior
+    │   ├── dataset_testing         <- tests on the dataset
+    │   ├── model_testing           <- tests on the model's training
+    │   ├── preprocessing_testing   <- tests on the preprocessing code
+    │   └── README.md
+    └── tox.ini
 
 
 --------
