@@ -213,10 +213,10 @@ Here's the view to the monitors:
 Lastly we tested the performances of the application using **Locust**, all the possible requests are defined in *locustfile.py*, in particular we test all the four different endpoints of our API:
 - Get models list (GET request)
 - Get model info (GET request)
-- Get image prediction (POST request)
+- Get image prediction (POST request, **the main task of our project**)
 - Get context prediction (POST request)
 
-POST requests are done more frequently as they are the main functionality of our service.
+POST requests are done more frequently as they are the main functionality of our service, in particular the **predict_images** task.
 
 Our service is quite heavy as the model is around 100M parameters and the user has to send to the server one or more images (the predict_image endpoint is the one that has the highest response time), so our server suffers from high response times even with only a few users connected at the time.
 This issue could be solved by simply upgrading the hosting service, as the one we are using is a very basic one.
