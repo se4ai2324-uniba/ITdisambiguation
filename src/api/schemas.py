@@ -14,7 +14,7 @@ class PredictContextPayload(BaseModel):
     contexts: str
 
     @validator("target_word")
-    def target_word_nonempty(self, v):
+    def target_word_nonempty(cls, v):
 
         """ Method to verify that the target word is not empty """
 
@@ -23,7 +23,7 @@ class PredictContextPayload(BaseModel):
         return v
 
     @validator("contexts")
-    def check_contexts(self, contexts, values):
+    def check_contexts(cls, contexts, values):
 
         """ Method to check the contexts """
 
@@ -55,7 +55,7 @@ class PredictImagesPayload(BaseModel):
     context: str
 
     @validator("target_word")
-    def target_word_nonempty(self, v):
+    def target_word_nonempty(cls, v):
 
         """ Method to verify that the target word is not empty """
 
@@ -64,7 +64,7 @@ class PredictImagesPayload(BaseModel):
         return v
 
     @validator("context")
-    def check_context(self, context, values):
+    def check_context(cls, context, values):
 
         """ Method to check the contexts """
 
