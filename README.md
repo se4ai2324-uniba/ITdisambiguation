@@ -104,6 +104,7 @@ For all the files we obtain a rating of 10/10, except for the following files:
 - src.api.schemas.py, with a rating 6.40/10
 - src.api.api.py, with a rating of is 8.85/10
 - src.utils.py, with a rating of 9.88/10
+
 The evaluation of the schemas.py file is significantly low due to the presence of "no-self-argument" and "too-few-public-methods" errors. Fixing the "no-self-argument" error results in an error during pytest testing. The "too-few-public-methods" error is a direct consequence of not resolving the "no-self-argument" error.
 
 # Flake8
