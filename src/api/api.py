@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 from ..conf import config
 from .schemas import PredictContextPayload, PredictImagesPayload, GetModelNamesResponseModel, GetModelNamesData, GetModelInfosResponseModel, ModelMetrics, GetModelInfosData, PredictContextResponseModel, PredictContextResponseData, PredictImageResponseModel, PredictImageResponseData
-from prometheus.instrumentator import instrumentator
+from .prometheus.instrumentator import instrumentator
 from ..models.evaluate import predict_context, predict
 sys.path.append("src")
 
