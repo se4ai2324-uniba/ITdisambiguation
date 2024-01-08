@@ -1,20 +1,22 @@
+""" Module that contains the api """
+
 import sys
 
+from typing import List
+from io import BytesIO
+from contextlib import asynccontextmanager
 import re
 import torch
 import open_clip
 from PIL import Image
-from conf import config
-from models.evaluate import predict_context, predict
-from api.schemas import PredictContextPayload, PredictImagesPayload, GetModelNamesResponseModel, GetModelNamesData, GetModelInfosResponseModel, ModelMetrics, GetModelInfosData, PredictContextResponseModel, PredictContextResponseData, PredictImageResponseModel, PredictImageResponseData
 from pydantic import ValidationError
-from fastapi import FastAPI, HTTPException, status, Request, File, UploadFile, Depends, Form
+from fastapi import FastAPI, HTTPException, status, File, UploadFile, Depends, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
-from contextlib import asynccontextmanager
-from typing import List
-from io import BytesIO
+from conf import config
+from api.schemas import PredictContextPayload, PredictImagesPayload, GetModelNamesResponseModel, GetModelNamesData, GetModelInfosResponseModel, ModelMetrics, GetModelInfosData, PredictContextResponseModel, PredictContextResponseData, PredictImageResponseModel, PredictImageResponseData
 from api.prometheus.instrumentator import instrumentator
+from ..models.evaluate import predict_context, predict
 sys.path.append("src")
 
 
@@ -29,15 +31,18 @@ model_dict = {}
 
 @asynccontextmanager
 # def _load_models_and_transformation():
-async def lifespan(app: FastAPI):
+async def lifespan(application: FastAPI):
+
+    """ Method to define the lifespan """
+
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     __pretrain_models = {"RN50": "openai",
                          "ViT-B-16": "laion2b_s34b_b88k"}
-    app.state.preproc = open_clip.image_transform(224, False)
+    application.state.preproc = open_clip.image_transform(224, False)
     # Load models
-    for model_name in __pretrain_models:
+    for model_name, value in __pretrain_models.items():
         model = open_clip.create_model(model_name,
-                                       __pretrain_models[model_name],
+                                       value,
                                        dev)
         if model_name == "RN50":
             model.load_state_dict(torch.load(config["MODEL_FILE"],
@@ -64,26 +69,35 @@ instrumentator.instrument(app).expose(app, include_in_schema=False, should_gzip=
 
 
 def checker_context(target_word: str = Form(...), contexts: str = Form(...)):
+
+    """ Method to check the context """
+
     try:
         return PredictContextPayload(target_word=target_word, contexts=contexts)
     except ValidationError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=jsonable_encoder(e.errors())
-        )
+        ) from e
 
 
 def checker_images(target_word: str = Form(...), context: str = Form(...)):
+
+    """ Method to check the images """
+
     try:
         return PredictImagesPayload(target_word=target_word, context=context)
     except ValidationError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=jsonable_encoder(e.errors())
-        )
+        ) from e
 
 
 def value_from_metric_content(metric_content: str):
+
+    """ Method that return the value of metric content """
+
     return float(re.search(r'\d+\.\d+', metric_content).group())
 
 
@@ -91,7 +105,10 @@ def value_from_metric_content(metric_content: str):
          tags=["Infos"],
          summary="Gets a list of all the available models",
          response_model=GetModelNamesResponseModel)
-def _get_models(request: Request):
+def _get_models():
+
+    """ Method to get the models """
+
     model_names = list(model_dict.keys())
     response = GetModelNamesResponseModel(
         data=GetModelNamesData(
@@ -105,7 +122,10 @@ def _get_models(request: Request):
          tags=["Infos"],
          summary="Gets all the infos about the given model",
          response_model=GetModelInfosResponseModel)
-def _get_model_infos(request: Request, model_name: str):
+def _get_model_infos(model_name: str):
+
+    """ Method to get model infos """
+
     if model_name not in model_dict:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
 
@@ -118,11 +138,11 @@ def _get_model_infos(request: Request, model_name: str):
         )
         typical_usage = "Ideal when you want a CLIP model with a solid base like ResNet-50, tailored for a specific word disambiguation task based on images."
 
-        with open("metrics/mrr.metric", 'r') as file:
+        with open("metrics/mrr.metric", 'r', encoding='UTF-8') as file:
             mrr = value_from_metric_content(file.read())
-        with open("metrics/hits1.metric", 'r') as file:
+        with open("metrics/hits1.metric", 'r', encoding='UTF-8') as file:
             hits1 = value_from_metric_content(file.read())
-        with open("metrics/hits3.metric", 'r') as file:
+        with open("metrics/hits3.metric", 'r', encoding='UTF-8') as file:
             hits3 = value_from_metric_content(file.read())
         metrics = ModelMetrics(
             mrr=mrr,
@@ -164,7 +184,7 @@ def _get_model_infos(request: Request, model_name: str):
           summary="Predict the most relevant context given a list of contexts, an image and a target word",
           response_description="The most relevant context and its associated index",
           response_model=PredictContextResponseModel)
-def _predict_context(request: Request, model_name: str, payload: PredictContextPayload = Depends(checker_context),
+def _predict_context(model_name: str, payload: PredictContextPayload = Depends(checker_context),
                      image: UploadFile = File(...)):
     """
     Predict Context API for a specific model.
@@ -212,7 +232,7 @@ def _predict_context(request: Request, model_name: str, payload: PredictContextP
           summary="Predict the most relevant image given a list of images, a context and a target word",
           response_description="The index of the image and the scores",
           response_model=PredictImageResponseModel)
-async def _predict_images(request: Request, model_name: str, payload: PredictImagesPayload = Depends(checker_images),
+async def _predict_images(model_name: str, payload: PredictImagesPayload = Depends(checker_images),
                           images: List[UploadFile] = File(...)):
     """
     Predict Images API for a specific model.
