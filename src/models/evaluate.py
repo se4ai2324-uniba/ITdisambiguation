@@ -6,7 +6,7 @@ import dagshub
 import mlflow
 import torch
 import open_clip
-from utils import VWSDDataset, Disambiguator
+from ..utils import VWSDDataset, Disambiguator
 from conf import config
 
 sys.path.append('src')
