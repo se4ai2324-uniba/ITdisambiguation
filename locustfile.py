@@ -25,7 +25,7 @@ class MyUser(HttpUser):
         model = choice(["RN50", "ViT-B-16"])
         self.client.get(f"/models/{model}")
 
-    @task(5)
+    @task(3)
     def predict_context_task(self):
         model = choice(["RN50", "ViT-B-16"])
         image = self.get_random_images(1)
