@@ -1,5 +1,5 @@
 import sys
-
+sys.path.append("src")
 import re
 import torch
 import open_clip
@@ -15,7 +15,6 @@ from contextlib import asynccontextmanager
 from typing import List
 from io import BytesIO
 from api.prometheus.instrumentator import instrumentator
-sys.path.append("src")
 
 
 origins = [
