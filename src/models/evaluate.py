@@ -2,12 +2,12 @@
 
 import sys
 from torch.utils.data import DataLoader
+from conf import config
+from utils import VWSDDataset, Disambiguator
 import dagshub
 import mlflow
 import torch
 import open_clip
-from utils import VWSDDataset, Disambiguator
-from conf import config
 
 sys.path.append('src')
 
@@ -54,17 +54,17 @@ def predict(model_1, words, contexts, images_1):
     return scores_tot
 
 
-def predict_context(model_1, target_word, contexts, image):
+def predict_context(model_1, word, contexts, image):
 
     """ Method used to predict the context given an image """
 
-    word_expanded = [target_word for _ in range(len(contexts))]
+    word_expanded = [word for _ in range(len(contexts))]
     text = tokenizer([f"This is {c}, {exp}."
                       for c, exp in zip(contexts, disambiguator(word_expanded, contexts))]).to(DEV)
     text_emb = model_1.encode_text(text, normalize=True)
     imgs_emb = model_1.encode_image(image.unsqueeze(0), normalize=True)
-    scores_tot = (100 * torch.einsum("ij,kj->ik", imgs_emb, text_emb)).softmax(-1)
-    return scores_tot
+    scores = (100 * torch.einsum("ij,kj->ik", imgs_emb, text_emb)).softmax(-1)
+    return scores
 
 
 if __name__ == '__main__':

@@ -2,11 +2,11 @@
 
 import torch
 import open_clip
+from src.conf import config
+from src.utils import VWSDDataset, Disambiguator
 from torch.utils.data import DataLoader
 from torch.optim import AdamW
 from torch.nn import NLLLoss
-from src.utils import VWSDDataset, Disambiguator
-from src.conf import config
 
 # Function for training the model
 
