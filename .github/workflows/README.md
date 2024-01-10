@@ -79,3 +79,7 @@ Key elements of this workflow:
       - __Azure Web App Deployment__: Deploys the Docker image to the Azure Web App (ITdisambiguation) using `azure/webapps-deploy@v2`, with the necessary configuration details and publish profile provided via GitHub secrets.
 
 This workflow plays a critical role in automating the continuous integration and deployment process, ensuring a streamlined deployment of the latest version of the app to Azure Web App.
+
+## Training action
+Initially we wanted to make a GitHub Action also to retrain the model whenever code or data changed, but in the end we decided to avoid implementing it.
+This choice was due to the fact that GitHub's virtual machines running the actions are not GPU-accelerated, this would make our training so slow that would exceed the maximum job execution time (6 hours).
