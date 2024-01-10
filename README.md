@@ -90,6 +90,19 @@ Project Organization
 
 --------
 
+# How model works
+First of all, the sense disambiguator receives context and the target word, producing an output that will be given as input, merged with the target word, to the CLIP text encoder. The text encoder generates embeddings representing the word and its sense based on the provided inputs. 
+
+Simultaneously, the images in the training set are fed into the image encoder. The encoder processes each image, generating the embedding of the image. Simultaneously, the sense disambiguator receives context and the target word, producing an output that will be given as input, merged with the target word, to the CLIP text encoder. 
+
+We end up with N 1024-dimensional vectors for each textual input and 10 · N 1024-dimensional vectors for each image.
+
+We then compute the cosine similarity between the textual embeddings and the image embedding of the ten candidate images, ending up with a similarity matrix of size N × 10. Finally we apply the softmax function on the rows with a temperature parameter τ = 0.01 and take the highest scores as the predictions. As for the metrics used to evaluate the models, we will use Mean Reciprocal Rank, Hits@1 and Hits@3. We obtain the following scores for each metric:
+    
+| MRR | Hits@1 | Hits@3 |
+|-----|--------|--------|
+|0.833|0.737   |0.920   |
+
 # Pylint
 We utilized the Pylint tool to conduct a comprehensive code cleanup process aimed at achieving a more refined, robust, and readable Python codebase. This effort was directed at minimizing errors and streamlining long-term maintenance.
 
