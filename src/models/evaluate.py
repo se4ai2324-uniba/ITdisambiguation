@@ -1,6 +1,7 @@
 """ Module used to evaluate the model """
 
 import sys
+sys.path.append('src')
 from torch.utils.data import DataLoader
 from conf import config
 from utils import VWSDDataset, Disambiguator
@@ -9,7 +10,6 @@ import mlflow
 import torch
 import open_clip
 
-sys.path.append('src')
 
 
 DEV = 'cuda' if torch.cuda.is_available() else 'cpu'
