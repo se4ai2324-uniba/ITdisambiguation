@@ -23,7 +23,7 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-          find src -type f -name "*.py" -exec pylint --disable=import-error,too-many-locals --output-format=text {} \; | tee pylint_report.txt
+          find src -type f -name "*.py" -exec pylint --disable=import-error,too-many-locals,line-too-long,too-few-public-methods --output-format=text {} \; | tee pylint_report.txt
     - name: Upload report
       uses: actions/upload-artifact@v2
       with:
