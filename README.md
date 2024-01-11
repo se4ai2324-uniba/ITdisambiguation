@@ -12,6 +12,10 @@ SemEval-2023
 The model was specifically built to address the [SemEval-2023 Visual Word Sense Disambiguation](https://raganato.github.io/vwsd/) challenge.
 
 **Task**: Given a word and some limited textual context, the task is to select among a set of candidate images the one which corresponds to the intended meaning of the target word.
+
+![Task example](./docs/images/task.png)
+*An example of the task: pick the image associated to the right meaning of the word "diamond"*
+
 ```
 @inproceedings{raganato-etal-2023-semeval,
     title = "{S}em{E}val-2023 {T}ask 1: {V}isual {W}ord {S}ense {D}isambiguation",
