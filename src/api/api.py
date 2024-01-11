@@ -128,7 +128,7 @@ def _get_model_infos(request: Request, model_name: str):
         metrics = ModelMetrics(
             mrr=mrr,
             hits1=hits1,
-            hits3=hits1,
+            hits3=hits3,
         )
 
     elif model_name == "ViT-B-16":

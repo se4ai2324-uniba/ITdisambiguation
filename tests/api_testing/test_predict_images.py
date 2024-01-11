@@ -1,6 +1,6 @@
 import pytest
 from io import BytesIO
-from urllib.request import urlopen
+from urllib.request import Request,urlopen
 from src.api.api import app
 from fastapi import status
 from fastapi.testclient import TestClient
@@ -13,7 +13,9 @@ def send_images_to_api(client, image_urls, target_word, context):
     """Scarica le immagini e le invia all'API."""
     files = []
     for url in image_urls:
-        res = urlopen(url)
+        request_site = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        res = urlopen(request_site)
+        #res = urlopen(url)
         files.append(('images', BytesIO(res.read())))
 
     # Send images to API
@@ -29,8 +31,8 @@ def send_images_to_api(client, image_urls, target_word, context):
     return response
 
 def test_success():
-    image_urls = ["https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg", 
-                "https://assets.gds.it/2016/11/TOPOLINO-970x485.jpg"]
+    image_urls = ["https://support.content.office.net/it-it/media/e8384959-ad1a-1b95-762b-2861496b886e.png", 
+                "https://i.pinimg.com/736x/7d/62/75/7d62759b503d9005892a592696055faf.jpg"]
     target_word = "mouse"
     context = "pc"
 
@@ -49,8 +51,8 @@ def test_success():
     ]
 )
 def test_failure(target_word, context):
-    image_urls = ["https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg", 
-                "https://assets.gds.it/2016/11/TOPOLINO-970x485.jpg"]
+    image_urls = ["https://support.content.office.net/it-it/media/e8384959-ad1a-1b95-762b-2861496b886e.png", 
+                "https://i.pinimg.com/736x/7d/62/75/7d62759b503d9005892a592696055faf.jpg"]
     target_word = "mouse"
     context = ""
 
@@ -62,18 +64,18 @@ def test_failure(target_word, context):
     "image_urls",
     [
         # More then ten images
-        ["https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg",
-         "https://assets.gds.it/2016/11/TOPOLINO-970x485.jpg",
-         "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg",
-         "https://assets.gds.it/2016/11/TOPOLINO-970x485.jpg",
-         "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg",
-         "https://assets.gds.it/2016/11/TOPOLINO-970x485.jpg",
-         "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg",
-         "https://assets.gds.it/2016/11/TOPOLINO-970x485.jpg",
-         "https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg",
-         "https://assets.gds.it/2016/11/TOPOLINO-970x485.jpg"],
+        ["https://support.content.office.net/it-it/media/e8384959-ad1a-1b95-762b-2861496b886e.png",
+         "https://i.pinimg.com/736x/7d/62/75/7d62759b503d9005892a592696055faf.jpg",
+         "https://support.content.office.net/it-it/media/e8384959-ad1a-1b95-762b-2861496b886e.png",
+         "https://i.pinimg.com/736x/7d/62/75/7d62759b503d9005892a592696055faf.jpg",
+         "https://support.content.office.net/it-it/media/e8384959-ad1a-1b95-762b-2861496b886e.png",
+         "https://i.pinimg.com/736x/7d/62/75/7d62759b503d9005892a592696055faf.jpg",
+         "https://support.content.office.net/it-it/media/e8384959-ad1a-1b95-762b-2861496b886e.png",
+         "https://i.pinimg.com/736x/7d/62/75/7d62759b503d9005892a592696055faf.jpg",
+         "https://support.content.office.net/it-it/media/e8384959-ad1a-1b95-762b-2861496b886e.png",
+         "https://i.pinimg.com/736x/7d/62/75/7d62759b503d9005892a592696055faf.jpg"],
         # Less then two images
-        ["https://www.magiacomputers.it/media/k2/items/cache/f710044bf79a4b1f5d8b085e5e5d9711_M.jpg"]
+        ["https://support.content.office.net/it-it/media/e8384959-ad1a-1b95-762b-2861496b886e.png"]
     ]
 )
 def test_failure_images(image_urls):
