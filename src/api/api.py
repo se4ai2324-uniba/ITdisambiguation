@@ -2,21 +2,22 @@
 
 import sys
 sys.path.append("src")
-from typing import List
-from io import BytesIO
-from contextlib import asynccontextmanager
 import re
 import torch
 import open_clip
 from PIL import Image
-from pydantic import ValidationError
-from fastapi import FastAPI, HTTPException, status, File, UploadFile, Depends, Form, Request
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.encoders import jsonable_encoder
-from api.schemas import PredictContextPayload, PredictImagesPayload, GetModelNamesResponseModel, GetModelNamesData, GetModelInfosResponseModel, ModelMetrics, GetModelInfosData, PredictContextResponseModel, PredictContextResponseData, PredictImageResponseModel, PredictImageResponseData
-from api.prometheus.instrumentator import instrumentator
 from conf import config
 from models.evaluate import predict_context, predict
+from api.schemas import *
+from pydantic import ValidationError
+from fastapi import FastAPI, HTTPException, status, Request, File, UploadFile, Depends, Form
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.encoders import jsonable_encoder
+from contextlib import asynccontextmanager
+from typing import List
+from io import BytesIO
+from api.prometheus.instrumentator import instrumentator
+from prometheus_client import start_http_server
 
 
 origins = [
