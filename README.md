@@ -33,16 +33,25 @@ Project's documentation
 
 Following there are all the READMEs of the project:
 - [Dataset card](./data/README.md)
-- [Model card](./model/README.md)
+- [Model card](./models/README.md)
 - [APIs and Prometheus documentation](./src/api/README.md)
 - [Pytest documentation](./tests/README.md)
-- [GitHub Actions documentation](./github/workflows/readme.md)
+- [GitHub Actions documentation](./.github/workflows/README.md)
 
 Lastly, in the `reports/` folder you can find the pylint, flake8, locust and codecarbon reports.
 
 Project Organization
 ------------
 
+    ├── .dvc                        <- dvc hidden folder
+    │   └── config
+    ├── .github                     <- github hidden folder
+    │   └── workflows
+    │        ├── README.md
+    │        ├── azure-static-web-apps-nice-island-02cd56d03.yml
+    │        ├── main_ITdisambiguation.yml
+    │        ├── pylint.yml
+    │        └── pytest.yaml
     ├── data                        <- data folder
     │   ├── external
     │   ├── interim
