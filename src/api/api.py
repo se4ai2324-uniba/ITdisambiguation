@@ -1,6 +1,5 @@
-""" Module that contains the api """
-
 import sys
+
 sys.path.append("src")
 import re
 import torch
@@ -33,9 +32,6 @@ model_dict = {}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-
-    """ Method to define the lifespan """
-
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     __pretrain_models = {"RN50": "openai",
                          "ViT-B-16": "laion2b_s34b_b88k"}
@@ -69,9 +65,6 @@ app.add_middleware(
 instrumentator.instrument(app).expose(app, include_in_schema=False, should_gzip=True)
 
 def checker_context(target_word: str = Form(...), contexts: str = Form(...)):
-
-    """ Method to check the context """
-
     try:
         return PredictContextPayload(target_word=target_word, contexts=contexts)
     except ValidationError as e:
@@ -82,9 +75,6 @@ def checker_context(target_word: str = Form(...), contexts: str = Form(...)):
 
 
 def checker_images(target_word: str = Form(...), context: str = Form(...)):
-
-    """ Method to check the images """
-
     try:
         return PredictImagesPayload(target_word=target_word, context=context)
     except ValidationError as e:
@@ -95,9 +85,6 @@ def checker_images(target_word: str = Form(...), context: str = Form(...)):
 
 
 def value_from_metric_content(metric_content: str):
-
-    """ Method that return the value of metric content """
-
     return float(re.search(r'\d+\.\d+', metric_content).group())
 
 
@@ -106,9 +93,6 @@ def value_from_metric_content(metric_content: str):
          summary="Gets a list of all the available models",
          response_model=GetModelNamesResponseModel)
 def _get_models(request: Request):
-
-    """ Method to get the models """
-
     model_names = list(model_dict.keys())
     response = GetModelNamesResponseModel(
         data=GetModelNamesData(
@@ -123,9 +107,6 @@ def _get_models(request: Request):
          summary="Gets all the infos about the given model",
          response_model=GetModelInfosResponseModel)
 def _get_model_infos(request: Request, model_name: str):
-
-    """ Method to get model infos """
-
     if model_name not in model_dict:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Model not found")
 
@@ -147,7 +128,7 @@ def _get_model_infos(request: Request, model_name: str):
         metrics = ModelMetrics(
             mrr=mrr,
             hits1=hits1,
-            hits3=hits3,
+            hits3=hits1,
         )
 
     elif model_name == "ViT-B-16":
