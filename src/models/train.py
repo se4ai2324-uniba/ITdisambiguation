@@ -1,12 +1,14 @@
 """ Module used to train the model """
 
-import torch
+import sys
+sys.path.append('src')
 import open_clip
-from src.conf import config
-from src.utils import VWSDDataset, Disambiguator
+import torch
 from torch.utils.data import DataLoader
 from torch.optim import AdamW
 from torch.nn import NLLLoss
+from conf import config
+from utils import VWSDDataset, Disambiguator
 
 # Function for training the model
 

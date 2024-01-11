@@ -17,6 +17,7 @@ nltk~=3.8.1
 Pillow~=10.1.0
 tqdm~=4.66.1
 setuptools~=65.5.0
+locust
 pytest
 
 # apis
